@@ -1,34 +1,22 @@
-# betterclass
+# BetterClass
 
-An Electron application with React and TypeScript
+An free, open-source, cross-platform system to manage your classroom.
 
-## Recommended IDE Setup
+## Components
 
-- [VSCode](https://code.visualstudio.com/) + [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) + [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- Server (connected to by the teacher and clients, coordinates between them)
+- Teacher (software running on teacher's computer which communicates with the server to control the clients)
+- Client (software running on student's computer)
 
-## Project Setup
+## Goals (Server)
 
-### Install
+- [ ] Allow teachers to connect to the server.
+- [ ] Allow clients to connect to the server.
 
-```bash
-$ npm install
-```
+## Goals (Teacher)
 
-### Development
+- [ ] Connect to the server.
 
-```bash
-$ npm run dev
-```
+## Goals (Client)
 
-### Build
-
-```bash
-# For windows
-$ npm run build:win
-
-# For macOS
-$ npm run build:mac
-
-# For Linux
-$ npm run build:linux
-```
+- [ ] On first launch, setup the server, classroom info and establish connection with the server.
