@@ -1,4 +1,4 @@
-import { ClassroomLayout } from "@/app/classroom/classroom"
+import { ClassroomLayout } from "./classroom"
 
 export default function ClassroomPage() {
   return <ClassroomLayout />

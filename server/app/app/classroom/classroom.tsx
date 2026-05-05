@@ -16,6 +16,7 @@ import {
   WifiOff,
   GraduationCap,
 } from "lucide-react"
+import Link from "next/link"
 
 type StudentStatus = "online" | "offline" | "locked"
 
@@ -179,14 +180,16 @@ export function ClassroomLayout() {
       <header className="flex h-14 shrink-0 items-center justify-between border-b border-border bg-card px-4">
         {/* Left: Branding + class info */}
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary">
-              <GraduationCap className="h-4 w-4 text-primary-foreground" />
+          <Link href="/app">
+            <div className="flex items-center gap-2">
+              <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary">
+                <GraduationCap className="h-4 w-4 text-primary-foreground" />
+              </div>
+              <span className="text-sm font-semibold text-foreground">
+                BetterClass
+              </span>
             </div>
-            <span className="text-sm font-semibold text-foreground">
-              BetterClass
-            </span>
-          </div>
+          </Link>
           <div className="hidden h-4 w-px bg-border sm:block" />
           <span className="hidden text-sm text-muted-foreground sm:block">
             Period 3 — Computer Science
