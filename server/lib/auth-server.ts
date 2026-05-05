@@ -1,5 +1,4 @@
 import { convexBetterAuthNextJs } from "@convex-dev/better-auth/nextjs"
-import { process } from "@types/node"
 
 export const {
   handler,
