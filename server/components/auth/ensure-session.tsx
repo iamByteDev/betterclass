@@ -1,16 +1,22 @@
-"use client";
+"use client"
 
-import { RedirectToSignIn } from "@/components/auth/redirect-to-signin";
-import { Authenticated, AuthLoading, Unauthenticated } from "convex/react";
-import { Loader2Icon } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { RedirectToSignIn } from "@/components/auth/redirect-to-signin"
+import { Authenticated, AuthLoading, Unauthenticated } from "convex/react"
+import { Loader2Icon } from "lucide-react"
+import { usePathname } from "next/navigation"
 
-export function EnsureSession({ children, redirectTo }: { children: React.ReactNode; redirectTo?: string }) {
-  const pathname = usePathname();
+export function EnsureSession({
+  children,
+  redirectTo,
+}: {
+  children: React.ReactNode
+  redirectTo?: string
+}) {
+  const pathname = usePathname()
 
-  let customRedirectTo = redirectTo;
+  let customRedirectTo = redirectTo
   if (!customRedirectTo && pathname === "/app/leaderboards") {
-    customRedirectTo = "/leaderboards";
+    customRedirectTo = "/leaderboards"
   }
 
   return (
@@ -25,5 +31,5 @@ export function EnsureSession({ children, redirectTo }: { children: React.ReactN
         </div>
       </AuthLoading>
     </>
-  );
+  )
 }

@@ -1,14 +1,18 @@
-"use client";
+"use client"
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
 
-export function RedirectToSignIn({ redirectTo = "/login" }: { redirectTo?: string }) {
-  const router = useRouter();
+export function RedirectToSignIn({
+  redirectTo = "/login",
+}: {
+  redirectTo?: string
+}) {
+  const router = useRouter()
 
   useEffect(() => {
-    router.replace(redirectTo);
-  }, [router, redirectTo]);
+    router.replace(redirectTo)
+  }, [router, redirectTo])
 
-  return null;
+  return null
 }

@@ -1,14 +1,14 @@
-"use client";
+"use client"
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
 
 export function RedirectToDashboard({ redirect }: { redirect?: string }) {
-  const router = useRouter();
+  const router = useRouter()
 
   useEffect(() => {
-    router.replace(redirect ?? "/app");
-  }, [router, redirect]);
+    router.replace(redirect ?? "/app")
+  }, [router, redirect])
 
-  return null;
+  return null
 }
