@@ -45,10 +45,10 @@ export function SignupForm({
     }
 
     await authClient.signUp.email(
-      { name, email, password, callbackURL: "/dashboard" },
+      { name, email, password },
       {
         onRequest: () => setLoading(true),
-        onSuccess: () => router.push("/dashboard"),
+        onSuccess: () => router.push("/app"),
         onError: (ctx) => {
           setError(ctx.error.message)
           setLoading(false)
@@ -61,7 +61,7 @@ export function SignupForm({
     setError(null)
     await authClient.signIn.social({
       provider: "google",
-      callbackURL: "/dashboard",
+      callbackURL: "/app",
     })
   }
 

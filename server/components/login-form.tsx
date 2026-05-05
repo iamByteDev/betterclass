@@ -37,10 +37,10 @@ export function LoginForm({
     e.preventDefault()
     setError(null)
     await authClient.signIn.email(
-      { email, password, callbackURL: "/dashboard" },
+      { email, password },
       {
         onRequest: () => setLoading(true),
-        onSuccess: () => router.push("/dashboard"),
+        onSuccess: () => router.push("/app"),
         onError: (ctx) => {
           setError(ctx.error.message)
           setLoading(false)
@@ -53,7 +53,7 @@ export function LoginForm({
     setError(null)
     await authClient.signIn.social({
       provider: "google",
-      callbackURL: "/dashboard",
+      callbackURL: "/app",
     })
   }
 
