@@ -1,19 +1,50 @@
-import { Button } from "@/components/ui/button"
+"use client"
 
-export default function Page() {
+import { EnsureNoSession } from "@/components/auth/ensure-no-session"
+import { motion } from "motion/react"
+import Link from "next/link"
+
+export default function Home() {
+  const words = ["Hello.", "Welcome", "to", "BetterClass."]
+
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
+    <EnsureNoSession allowAuthenticatedWithParam={["from", "dashboard"]}>
+      <div className="flex min-h-screen flex-col items-center justify-center gap-8">
+        <div className="flex flex-wrap items-center justify-center gap-3 text-5xl font-semibold tracking-tight md:text-6xl lg:text-7xl">
+          {words.map((word, index) => (
+            <motion.span
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.5,
+                delay: index * 0.3,
+                ease: "easeOut",
+              }}
+              className={word === "BetterClass." ? "text-primary" : ""}
+            >
+              {word}
+            </motion.span>
+          ))}
         </div>
-        <div className="font-mono text-xs text-muted-foreground">
-          (Press <kbd>d</kbd> to toggle dark mode)
-        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: 0.5,
+            delay: words.length * 0.3 + 0.2,
+            ease: "easeOut",
+          }}
+        >
+          <Link
+            href="/app"
+            className="text-xl underline underline-offset-4 transition-colors hover:text-muted-foreground"
+          >
+            Go to Dashboard
+          </Link>
+        </motion.div>
       </div>
-    </div>
+    </EnsureNoSession>
   )
 }
