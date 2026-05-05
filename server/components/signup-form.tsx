@@ -17,7 +17,7 @@ import {
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
 
-export function LoginForm({
+export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
@@ -25,9 +25,9 @@ export function LoginForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader className="text-center">
-          <CardTitle className="text-xl">Welcome back</CardTitle>
+          <CardTitle className="text-xl">Create an account</CardTitle>
           <CardDescription>
-            Login with your Apple or Google account
+            Sign up with your Apple or Google account
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -41,12 +41,21 @@ export function LoginForm({
                       fill="currentColor"
                     />
                   </svg>
-                  Login with Google
+                  Sign up with Google
                 </Button>
               </Field>
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                 Or continue with
               </FieldSeparator>
+              <Field>
+                <FieldLabel htmlFor="name">Full name</FieldLabel>
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="Jane Smith"
+                  required
+                />
+              </Field>
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
@@ -57,22 +66,20 @@ export function LoginForm({
                 />
               </Field>
               <Field>
-                <div className="flex items-center">
-                  <FieldLabel htmlFor="password">Password</FieldLabel>
-                  <a
-                    href="#"
-                    className="ms-auto text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </a>
-                </div>
+                <FieldLabel htmlFor="password">Password</FieldLabel>
                 <Input id="password" type="password" required />
               </Field>
               <Field>
-                <Button type="submit">Login</Button>
+                <FieldLabel htmlFor="confirm-password">
+                  Confirm password
+                </FieldLabel>
+                <Input id="confirm-password" type="password" required />
+              </Field>
+              <Field>
+                <Button type="submit">Create account</Button>
                 <FieldDescription className="text-center">
-                  Don&apos;t have an account?{" "}
-                  <Link href="/signup">Sign up</Link>
+                  Already have an account?{" "}
+                  <Link href="/login">Log in</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>
