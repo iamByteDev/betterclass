@@ -25,16 +25,7 @@ import { UpdateRoleDialog } from "@/components/schools/members/update-role-dialo
 import { RemoveMemberDialog } from "@/components/schools/members/remove-member-dialog"
 import { InviteMemberDialog } from "@/components/schools/invitations/invite-member-dialog"
 import { MoreHorizontalIcon, UsersIcon } from "lucide-react"
-import { cn } from "@/lib/utils"
-
-function getInitials(name: string) {
-  return name
-    .split(" ")
-    .map((w) => w[0])
-    .slice(0, 2)
-    .join("")
-    .toUpperCase()
-}
+import { cn, getInitials } from "@/lib/utils"
 
 const ROLE_STYLES: Record<string, string> = {
   owner: "bg-violet-500/10 text-violet-600 dark:text-violet-400",
