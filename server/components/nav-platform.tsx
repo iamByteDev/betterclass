@@ -25,7 +25,7 @@ export function NavPlatform() {
     },
     {
       title: "Schools",
-      url: "/schools",
+      url: "/app/schools",
       icon: <SchoolIcon />,
     },
   ]
