@@ -33,18 +33,16 @@ import {
 import { Spinner } from "@/components/ui/spinner"
 import { UserPlusIcon, CheckCircleIcon } from "lucide-react"
 import { toast } from "sonner"
-
-const ROLES = [
-  { value: "member", label: "Member" },
-  { value: "admin", label: "Admin" },
-  { value: "owner", label: "Owner" },
-] as const
+import {
+  MEMBER_ROLES,
+  type MemberRole,
+} from "@/components/schools/configuration"
 
 export function InviteMemberDialog() {
   const { organization: org } = useSchoolContext()
   const [open, setOpen] = useState(false)
   const [email, setEmail] = useState("")
-  const [role, setRole] = useState<string | null>("member")
+  const [role, setRole] = useState<MemberRole | null>("member")
   const [isSending, setIsSending] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [invitationId, setInvitationId] = useState<string | null>(null)
@@ -66,9 +64,9 @@ export function InviteMemberDialog() {
     setIsSending(true)
     setError(null)
 
-    let validatedRole: (typeof ROLES)[number]["value"] = "member"
-    if (role && ROLES.some((r) => r.value === role)) {
-      validatedRole = role as (typeof ROLES)[number]["value"]
+    let validatedRole: MemberRole = "member"
+    if (role && MEMBER_ROLES.some((r) => r.value === role)) {
+      validatedRole = role as MemberRole
     }
 
     const { data, error: inviteError } =
@@ -151,12 +149,16 @@ export function InviteMemberDialog() {
               </Field>
               <Field>
                 <FieldLabel>Role</FieldLabel>
-                <Select value={role} onValueChange={(val) => setRole(val)}>
+                <Select
+                  value={role}
+                  onValueChange={(val) => setRole(val)}
+                  items={MEMBER_ROLES}
+                >
                   <SelectTrigger className="w-full">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {ROLES.map((r) => (
+                    {MEMBER_ROLES.map((r) => (
                       <SelectItem key={r.value} value={r.value}>
                         {r.label}
                       </SelectItem>
