@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { ConvexClientProvider } from "@/components/providers/convex-client"
 import { Toaster } from "sonner"
+import { type Metadata } from "next"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
 
@@ -13,6 +14,11 @@ const fontMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
 })
+
+export const metadata: Metadata = {
+  title: "BetterClass",
+  description: "BetterClass is a platform for managing your classroom.",
+}
 
 export default function RootLayout({
   children,
