@@ -6,6 +6,7 @@ import { query } from "./_generated/server"
 import { betterAuth, type BetterAuthOptions } from "better-auth/minimal"
 import authConfig from "./auth.config"
 import authSchema from "./betterAuth/schema"
+import { ConvexError } from "convex/values"
 
 const siteUrl = process.env.SITE_URL!
 
@@ -40,11 +41,21 @@ export const createAuth = (ctx: GenericCtx<DataModel>) => {
   return betterAuth(createAuthOptions(ctx))
 }
 
-// Example function for getting the current user
-// Feel free to edit, omit, etc.
+// Query to get the current user
 export const getCurrentUser = query({
   args: {},
   handler: async (ctx) => {
-    return authComponent.getAuthUser(ctx)
+    const userIdentity = await ctx.auth.getUserIdentity()
+    if (!userIdentity) {
+      return null
+    }
+
+    // Protect against @convex-dev/better-auth from throwing an error when the user is logging out.
+    return authComponent.getAuthUser(ctx).catch((error) => {
+      if (error instanceof ConvexError && error.message === "Unauthenticated") {
+        return null
+      }
+      throw error
+    })
   },
 })

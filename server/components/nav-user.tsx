@@ -38,7 +38,7 @@ export function NavUser() {
   if (!userData) return null
 
   const user = {
-    name: userData.displayUsername || userData.name,
+    name: userData.name,
     email: userData.email,
     avatar: userData.image || undefined,
   }
@@ -60,6 +60,13 @@ export function NavUser() {
     }
   }
 
+  const initials = user.name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2)
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -71,7 +78,7 @@ export function NavUser() {
           >
             <Avatar>
               <AvatarImage src={user.avatar} alt={user.name} />
-              <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+              <AvatarFallback>{initials}</AvatarFallback>
             </Avatar>
             <div className="grid flex-1 text-start text-sm leading-tight">
               <span className="truncate font-medium">{user.name}</span>
@@ -90,14 +97,7 @@ export function NavUser() {
                 <div className="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
                   <Avatar>
                     <AvatarImage src={user.avatar} alt={user.name} />
-                    <AvatarFallback>
-                      {user.name
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")
-                        .toUpperCase()
-                        .slice(0, 2)}
-                    </AvatarFallback>
+                    <AvatarFallback>{initials}</AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-start text-sm leading-tight">
                     <span className="truncate font-medium">{user.name}</span>
