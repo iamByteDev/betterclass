@@ -1,7 +1,7 @@
 "use client"
 
 import { use, useEffect } from "react"
-import { notFound } from "next/navigation"
+import { notFound, redirect } from "next/navigation"
 import { authClient } from "@/lib/auth-client"
 import { useSchool } from "@/hooks/use-school"
 import { SchoolProvider } from "@/components/schools/school-context"
@@ -69,7 +69,7 @@ export default function SchoolLayout({
   }
 
   if (error || !org) {
-    notFound()
+    return redirect("/app/schools")
   }
 
   const currentMember =

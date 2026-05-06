@@ -42,6 +42,8 @@ import {
   CircleXIcon,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useQuery } from "convex/react"
+import { api } from "@/convex/_generated/api"
 
 function toSlug(value: string) {
   return value
@@ -257,7 +259,8 @@ function CreateSchoolDialog() {
 }
 
 export default function SchoolsPage() {
-  const { data: organizations, isPending } = authClient.useListOrganizations()
+  const organizations = useQuery(api.auth.listUserOrgs)
+  const isPending = organizations === undefined
 
   return (
     <SidebarWrapper>
