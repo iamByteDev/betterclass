@@ -24,12 +24,10 @@ import {
 import { Field, FieldLabel } from "@/components/ui/field"
 import { Spinner } from "@/components/ui/spinner"
 import { toast } from "sonner"
-
-const ROLES = [
-  { value: "owner", label: "Owner" },
-  { value: "admin", label: "Admin" },
-  { value: "member", label: "Member" },
-] as const
+import {
+  MEMBER_ROLES,
+  type MemberRole,
+} from "@/components/schools/configuration"
 
 interface UpdateRoleDialogProps {
   member: OrgMember
@@ -43,7 +41,7 @@ export function UpdateRoleDialog({
   onOpenChange,
 }: UpdateRoleDialogProps) {
   const { organization: org } = useSchoolContext()
-  const [role, setRole] = useState(member.role)
+  const [role, setRole] = useState<MemberRole | null>(member.role)
   const [isSaving, setIsSaving] = useState(false)
 
   const isDirty = role !== member.role
@@ -52,10 +50,16 @@ export function UpdateRoleDialog({
   async function handleSave() {
     if (!canSave) return
     setIsSaving(true)
+
+    let validatedRole: MemberRole = "member"
+    if (role && MEMBER_ROLES.some((r) => r.value === role)) {
+      validatedRole = role as MemberRole
+    }
+
     const { error } = await authClient.organization.updateMemberRole({
       memberId: member.id,
       organizationId: org.id,
-      role,
+      role: validatedRole,
     })
     setIsSaving(false)
     if (error) {
@@ -84,12 +88,16 @@ export function UpdateRoleDialog({
         </DialogHeader>
         <Field>
           <FieldLabel>Role</FieldLabel>
-          <Select value={role} onValueChange={(val) => setRole(val)}>
+          <Select
+            value={role}
+            onValueChange={(val) => setRole(val)}
+            items={MEMBER_ROLES}
+          >
             <SelectTrigger className="w-full">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              {ROLES.map((r) => (
+              {MEMBER_ROLES.map((r) => (
                 <SelectItem key={r.value} value={r.value}>
                   {r.label}
                 </SelectItem>

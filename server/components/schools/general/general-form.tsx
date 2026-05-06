@@ -18,6 +18,7 @@ import { CircleCheckIcon, CircleXIcon, Loader2Icon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
+import { IS_SET_LOGO_ENABLED } from "@/components/schools/configuration"
 
 function toSlug(value: string) {
   return value
@@ -154,20 +155,22 @@ export function GeneralForm() {
               </FieldDescription>
             </Field>
 
-            <Field>
-              <FieldLabel htmlFor="org-logo">Logo URL</FieldLabel>
-              <Input
-                id="org-logo"
-                type="url"
-                value={logo}
-                onChange={(e) => setLogo(e.target.value)}
-                disabled={!canEdit || isSaving}
-                placeholder="https://example.com/logo.png"
-              />
-              <FieldDescription>
-                Optional. A publicly accessible image URL.
-              </FieldDescription>
-            </Field>
+            {IS_SET_LOGO_ENABLED && (
+              <Field>
+                <FieldLabel htmlFor="org-logo">Logo URL</FieldLabel>
+                <Input
+                  id="org-logo"
+                  type="url"
+                  value={logo}
+                  onChange={(e) => setLogo(e.target.value)}
+                  disabled={!canEdit || isSaving}
+                  placeholder="https://example.com/logo.png"
+                />
+                <FieldDescription>
+                  Optional. A publicly accessible image URL.
+                </FieldDescription>
+              </Field>
+            )}
 
             {error && <FieldError>{error}</FieldError>}
           </FieldGroup>
