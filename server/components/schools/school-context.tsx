@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext } from "react"
+import { createContext, useCallback, useContext, useMemo } from "react"
 import { type FullOrganization, type OrgMember } from "@/hooks/use-school"
 import { authClient } from "@/lib/auth-client"
 
@@ -26,25 +26,29 @@ export function SchoolProvider({
   currentMember: OrgMember | null
   children: React.ReactNode
 }) {
-  function can(permissions: PermissionArg) {
-    if (!currentMember) return false
-    return authClient.organization.checkRolePermission({
-      permissions,
-      role: currentMember.role,
-    })
-  }
+  const can = useCallback(
+    (permissions: PermissionArg) => {
+      if (!currentMember) return false
+      return authClient.organization.checkRolePermission({
+        permissions,
+        role: currentMember.role,
+      })
+    },
+    [currentMember]
+  )
+
+  const value = useMemo(
+    () => ({
+      organization,
+      members: organization.members,
+      currentMember,
+      can,
+    }),
+    [organization, currentMember, can]
+  )
 
   return (
-    <SchoolContext.Provider
-      value={{
-        organization,
-        members: organization.members,
-        currentMember,
-        can,
-      }}
-    >
-      {children}
-    </SchoolContext.Provider>
+    <SchoolContext.Provider value={value}>{children}</SchoolContext.Provider>
   )
 }
 

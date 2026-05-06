@@ -56,20 +56,25 @@ export function UpdateRoleDialog({
       validatedRole = role as MemberRole
     }
 
-    const { error } = await authClient.organization.updateMemberRole({
-      memberId: member.id,
-      organizationId: org.id,
-      role: validatedRole,
-    })
-    setIsSaving(false)
-    if (error) {
-      toast.error("Failed to update role", { description: error.message })
-      return
+    try {
+      const { error } = await authClient.organization.updateMemberRole({
+        memberId: member.id,
+        organizationId: org.id,
+        role: validatedRole,
+      })
+      if (error) {
+        toast.error("Failed to update role", { description: error.message })
+        return
+      }
+      toast.success("Role updated", {
+        description: `${member.user.name} is now a${role === "owner" ? "n" : ""} ${role}.`,
+      })
+      onOpenChange(false)
+    } catch {
+      toast.error("Failed to update role")
+    } finally {
+      setIsSaving(false)
     }
-    toast.success("Role updated", {
-      description: `${member.user.name} is now a${role === "owner" ? "n" : ""} ${role}.`,
-    })
-    onOpenChange(false)
   }
 
   function handleOpenChange(next: boolean) {

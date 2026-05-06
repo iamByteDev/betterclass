@@ -68,29 +68,33 @@ export function GeneralForm() {
 
     const originalSlug = org.slug
 
-    const { error: updateError } = await authClient.organization.update({
-      organizationId: org.id,
-      data: {
-        name: name.trim(),
-        slug: slug.trim(),
-        logo: logo.trim() || undefined,
-      },
-    })
+    try {
+      const { error: updateError } = await authClient.organization.update({
+        organizationId: org.id,
+        data: {
+          name: name.trim(),
+          slug: slug.trim(),
+          logo: logo.trim() || undefined,
+        },
+      })
 
-    setIsSaving(false)
+      if (updateError) {
+        setError(updateError.message ?? "Failed to save changes.")
+        return
+      }
 
-    if (updateError) {
-      setError(updateError.message ?? "Failed to save changes.")
-      return
-    }
+      toast.success("School updated", {
+        description: "Your changes have been saved.",
+      })
 
-    toast.success("School updated", {
-      description: "Your changes have been saved.",
-    })
-
-    // Slug changed, redirect to new slug
-    if (slug.trim() !== originalSlug) {
-      router.push(`/app/schools/${slug.trim()}/general`)
+      // Slug changed, redirect to new slug
+      if (slug.trim() !== originalSlug) {
+        router.push(`/app/schools/${slug.trim()}/general`)
+      }
+    } catch {
+      setError("Failed to save changes.")
+    } finally {
+      setIsSaving(false)
     }
   }
 

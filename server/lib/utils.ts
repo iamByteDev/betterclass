@@ -16,7 +16,8 @@ export function toSlug(value: string) {
 
 export function getInitials(name: string) {
   return name
-    .split(" ")
+    .trim()
+    .split(/\s+/)
     .map((word) => word[0])
     .slice(0, 2)
     .join("")
