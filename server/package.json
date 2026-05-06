@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "eslint",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "regen-auth-schema": "cd convex/betterAuth && bunx auth generate --output generatedSchema.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.1",
