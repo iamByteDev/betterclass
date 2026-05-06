@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useState } from "react"
+import { useState } from "react"
 import { authClient } from "@/lib/auth-client"
 import { useSchoolContext } from "@/components/schools/school-context"
 import { InviteMemberDialog } from "@/components/schools/invitations/invite-member-dialog"
@@ -31,6 +31,9 @@ import {
 import { MoreHorizontalIcon, MailIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
+import { useQuery } from "convex/react"
+import { api } from "@/convex/_generated/api"
+import { MEMBER_ROLES } from "@/components/schools/configuration"
 
 type Invitation = {
   id: string
@@ -56,17 +59,17 @@ function statusLabel(status: string) {
 
 function roleLabel(role?: string | null) {
   if (!role) return "Member"
-  return role.charAt(0).toUpperCase() + role.slice(1)
+  const roleObject = MEMBER_ROLES.find((r) => r.value === role)
+  if (!roleObject) return "Member"
+  return roleObject.label
 }
 
 function InvitationRow({
   invitation,
   canCancel,
-  onCanceled,
 }: {
   invitation: Invitation
   canCancel: boolean
-  onCanceled: () => void
 }) {
   const [isCanceling, setIsCanceling] = useState(false)
 
@@ -81,7 +84,6 @@ function InvitationRow({
       return
     }
     toast.success("Invitation cancelled")
-    onCanceled()
   }
 
   const createdDate = new Date(invitation.createdAt).toLocaleDateString(
@@ -158,24 +160,14 @@ function InvitationRow({
 
 export function InvitationsPage() {
   const { organization: org, can } = useSchoolContext()
-  const [invitations, setInvitations] = useState<Invitation[]>([])
-  const [isPending, setIsPending] = useState(true)
 
   const canInvite = can({ invitation: ["create"] })
   const canCancel = can({ invitation: ["cancel"] })
 
-  const loadInvitations = useCallback(async () => {
-    setIsPending(true)
-    const { data } = await authClient.organization.listInvitations({
-      query: { organizationId: org.id },
-    })
-    setInvitations((data as Invitation[]) ?? [])
-    setIsPending(false)
-  }, [org.id])
-
-  useEffect(() => {
-    void loadInvitations()
-  }, [loadInvitations])
+  const invitations = useQuery(api.auth.listOrgInvitations, {
+    organizationId: org.id,
+  })
+  const isPending = invitations === undefined
 
   return (
     <div className="flex flex-col gap-4">
@@ -221,7 +213,6 @@ export function InvitationsPage() {
                   key={inv.id}
                   invitation={inv}
                   canCancel={canCancel}
-                  onCanceled={loadInvitations}
                 />
               ))}
             </TableBody>

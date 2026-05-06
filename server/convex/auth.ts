@@ -103,3 +103,20 @@ export const listUserOrgs = query({
     return organizations
   },
 })
+
+export const listOrgInvitations = query({
+  args: {
+    organizationId: v.string(),
+  },
+  handler: async (ctx, { organizationId }) => {
+    const { auth, headers } = await authComponent.getAuth(createAuth, ctx)
+
+    const invites = await auth.api.listInvitations({
+      query: {
+        organizationId: organizationId,
+      },
+      headers,
+    })
+    return invites
+  },
+})
