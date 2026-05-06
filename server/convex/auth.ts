@@ -69,18 +69,37 @@ export const getCurrentUser = query({
   },
 })
 
+// Organization Queries //
 export const getOrgData = query({
   args: {
-    organizationSlug: v.optional(v.string()),
+    organizationSlug: v.string(),
   },
   handler: async (ctx, { organizationSlug }) => {
     const { auth, headers } = await authComponent.getAuth(createAuth, ctx)
-    const organization = await auth.api.getFullOrganization({
-      query: {
-        organizationSlug: organizationSlug,
-      },
+
+    try {
+      const organization = await auth.api.getFullOrganization({
+        query: {
+          organizationSlug: organizationSlug,
+        },
+        headers,
+      })
+      return organization
+    } catch {
+      // May be caused by org not being found, user not being a member of the org, etc.
+      return null
+    }
+  },
+})
+
+export const listUserOrgs = query({
+  args: {},
+  handler: async (ctx) => {
+    const { auth, headers } = await authComponent.getAuth(createAuth, ctx)
+
+    const organizations = await auth.api.listOrganizations({
       headers,
     })
-    return organization
+    return organizations
   },
 })
