@@ -125,6 +125,8 @@ export function CreateSchoolDialog() {
                   "bg-input/20 dark:bg-input/30",
                   "px-2 transition-colors focus-within:ring-2",
                   "focus-within:border-ring focus-within:ring-ring/30",
+                  slugState === "available" &&
+                    "focus-within:border-success focus-within:ring-success/30",
                   slugState === "unavailable" &&
                     "focus-within:border-destructive focus-within:ring-destructive/30"
                 )}
@@ -142,7 +144,7 @@ export function CreateSchoolDialog() {
                   <Loader2Icon className="size-4 animate-spin text-muted-foreground" />
                 )}
                 {slugState === "available" && (
-                  <CircleCheckIcon className="size-4 text-muted-foreground" />
+                  <CircleCheckIcon className="size-4 text-success" />
                 )}
                 {slugState === "unavailable" && (
                   <CircleXIcon className="size-4 text-destructive" />

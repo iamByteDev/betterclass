@@ -101,7 +101,7 @@ export function InviteMemberDialog() {
           <>
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
-                <CheckCircleIcon className="size-4 text-emerald-500" />
+                <CheckCircleIcon className="size-4 text-success" />
                 Invitation sent
               </DialogTitle>
               <DialogDescription>

@@ -124,6 +124,8 @@ export function GeneralForm() {
                   "flex items-center rounded-md border border-input bg-input/20 px-2 transition-colors",
                   "focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/30",
                   "dark:bg-input/30",
+                  slugState === "available" &&
+                    "focus-within:border-success focus-within:ring-success/30",
                   slugState === "unavailable" &&
                     "focus-within:border-destructive focus-within:ring-destructive/30"
                 )}
@@ -140,8 +142,8 @@ export function GeneralForm() {
                 {slugState === "checking" && (
                   <Loader2Icon className="size-3.5 animate-spin text-muted-foreground" />
                 )}
-                {slugState === "available" && slug !== org.slug && (
-                  <CircleCheckIcon className="size-3.5 text-muted-foreground" />
+                {slugState === "available" && (
+                  <CircleCheckIcon className="size-3.5 text-success" />
                 )}
                 {slugState === "unavailable" && (
                   <CircleXIcon className="size-3.5 text-destructive" />
