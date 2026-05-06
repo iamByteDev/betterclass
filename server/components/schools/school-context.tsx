@@ -10,7 +10,7 @@ type PermissionArg = Parameters<
 
 interface SchoolContextValue {
   organization: FullOrganization
-  members: FullOrganization["members"]
+  members: OrgMember[]
   currentMember: OrgMember | null
   can: (permissions: PermissionArg) => boolean
 }

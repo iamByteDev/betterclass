@@ -17,6 +17,7 @@ import { Spinner } from "@/components/ui/spinner"
 import { CircleCheckIcon, CircleXIcon, Loader2Icon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
+import { useRouter } from "next/navigation"
 
 function toSlug(value: string) {
   return value
@@ -29,6 +30,8 @@ function toSlug(value: string) {
 
 export function GeneralForm() {
   const { organization: org, can } = useSchoolContext()
+
+  const router = useRouter()
 
   const [name, setName] = useState(org.name)
   const [slug, setSlug] = useState(org.slug)
@@ -62,6 +65,8 @@ export function GeneralForm() {
     setIsSaving(true)
     setError(null)
 
+    const originalSlug = org.slug
+
     const { error: updateError } = await authClient.organization.update({
       organizationId: org.id,
       data: {
@@ -81,6 +86,11 @@ export function GeneralForm() {
     toast.success("School updated", {
       description: "Your changes have been saved.",
     })
+
+    // Slug changed, redirect to new slug
+    if (slug.trim() !== originalSlug) {
+      router.push(`/app/schools/${slug.trim()}/general`)
+    }
   }
 
   return (
