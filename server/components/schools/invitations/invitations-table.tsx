@@ -48,7 +48,7 @@ type Invitation = {
 
 const STATUS_STYLES: Record<string, string> = {
   pending: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
-  accepted: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+  accepted: "bg-success/10 text-success",
   rejected: "bg-destructive/10 text-destructive",
   canceled: "border-border bg-input/20 text-muted-foreground dark:bg-input/30",
 }

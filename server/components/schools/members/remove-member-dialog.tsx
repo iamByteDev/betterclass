@@ -4,7 +4,6 @@ import { useState } from "react"
 import { authClient } from "@/lib/auth-client"
 import { useSchoolContext } from "@/components/schools/school-context"
 import { type OrgMember } from "@/hooks/use-school"
-import { Button } from "@/components/ui/button"
 import {
   AlertDialog,
   AlertDialogTrigger,

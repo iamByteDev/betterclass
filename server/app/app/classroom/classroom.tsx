@@ -164,7 +164,7 @@ function StatusBadge({ status }: { status: StudentStatus }) {
     )
   }
   return (
-    <Badge className="bg-emerald-500/15 text-emerald-600 hover:bg-emerald-500/15 dark:text-emerald-400">
+    <Badge className="bg-success/15 text-success">
       Online
     </Badge>
   )
