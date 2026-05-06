@@ -1,8 +1,6 @@
 "use client"
 
 import * as React from "react"
-
-import { NavProjects } from "@/components/nav-projects"
 import { NavUser } from "@/components/nav-user"
 import { TeamSwitcher } from "@/components/team-switcher"
 import {
@@ -26,36 +24,9 @@ import { NavPlatform } from "@/components/nav-platform"
 const data = {
   teams: [
     {
-      name: "Acme Inc",
+      name: "Default",
       logo: <GalleryVerticalEndIcon />,
       plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: <AudioLinesIcon />,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: <TerminalIcon />,
-      plan: "Free",
-    },
-  ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: <FrameIcon />,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: <PieChartIcon />,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: <MapIcon />,
     },
   ],
 }
@@ -68,7 +39,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavPlatform />
-        {false && <NavProjects projects={data.projects} />}
       </SidebarContent>
       <SidebarFooter>
         <NavUser />
