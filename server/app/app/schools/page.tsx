@@ -12,7 +12,9 @@ import {
 } from "@/components/ui/card"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { Skeleton } from "@/components/ui/skeleton"
-import { SchoolIcon } from "lucide-react"
+import { buttonVariants } from "@/components/ui/button"
+import { SchoolIcon, PlusIcon } from "lucide-react"
+import Link from "next/link"
 
 function SchoolCardSkeleton() {
   return (
@@ -66,11 +68,20 @@ export default function SchoolsPage() {
     <SidebarWrapper>
       <DashboardHeader breadcrumbs={[{ label: "Schools" }]} />
       <div className="flex flex-1 flex-col gap-6 p-4 pt-0">
-        <div className="flex flex-col gap-1">
-          <h1 className="text-base font-semibold">Schools</h1>
-          <p className="text-xs text-muted-foreground">
-            Organisations you are a member of.
-          </p>
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex flex-col gap-1">
+            <h1 className="text-base font-semibold">Schools</h1>
+            <p className="text-xs text-muted-foreground">
+              Organisations you are a member of.
+            </p>
+          </div>
+          <Link
+            href="/app/schools/create"
+            className={buttonVariants({ size: "sm" })}
+          >
+            <PlusIcon />
+            Create school
+          </Link>
         </div>
 
         {isPending ? (
