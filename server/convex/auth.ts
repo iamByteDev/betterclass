@@ -7,6 +7,7 @@ import { betterAuth, type BetterAuthOptions } from "better-auth/minimal"
 import authConfig from "./auth.config"
 import authSchema from "./betterAuth/schema"
 import { ConvexError } from "convex/values"
+import { organization } from "better-auth/plugins"
 
 const siteUrl = process.env.SITE_URL!
 
@@ -33,6 +34,8 @@ export const createAuthOptions = (ctx: GenericCtx<DataModel>) => {
     plugins: [
       // The Convex plugin is required for Convex compatibility
       convex({ authConfig }),
+      // Organisation
+      organization(),
     ],
     socialProviders: {
       google: {
