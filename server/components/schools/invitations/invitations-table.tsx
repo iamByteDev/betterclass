@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useState } from "react"
 import { authClient } from "@/lib/auth-client"
 import { useSchoolContext } from "@/components/schools/school-context"
-import { CopyInviteLink } from "@/components/schools/invitations/copy-invite-link"
 import { InviteMemberDialog } from "@/components/schools/invitations/invite-member-dialog"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -122,7 +121,6 @@ function InvitationRow({
       <TableCell className="text-muted-foreground">{createdDate}</TableCell>
       <TableCell>
         <div className="flex items-center justify-end gap-1">
-          {isPending && <CopyInviteLink invitationId={invitation.id} />}
           {isPending && canCancel && (
             <DropdownMenu>
               <DropdownMenuTrigger

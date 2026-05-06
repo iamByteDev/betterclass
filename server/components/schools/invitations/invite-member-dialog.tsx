@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { authClient } from "@/lib/auth-client"
 import { useSchoolContext } from "@/components/schools/school-context"
-import { CopyInviteLink } from "@/components/schools/invitations/copy-invite-link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -45,7 +44,7 @@ export function InviteMemberDialog() {
   const [role, setRole] = useState<MemberRole | null>("member")
   const [isSending, setIsSending] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [invitationId, setInvitationId] = useState<string | null>(null)
+  const [inviteSent, setInviteSent] = useState(false)
 
   function handleOpenChange(next: boolean) {
     setOpen(next)
@@ -54,7 +53,7 @@ export function InviteMemberDialog() {
       setRole("member")
       setError(null)
       setIsSending(false)
-      setInvitationId(null)
+      setInviteSent(false)
     }
   }
 
@@ -84,16 +83,12 @@ export function InviteMemberDialog() {
     }
 
     if (data?.id) {
-      setInvitationId(data.id)
-      toast.success("Invitation created", {
-        description: `Invitation for ${email} is ready to share.`,
+      setInviteSent(true)
+      toast.success("Invitation sent", {
+        description: `${email} can accept it from Invites in the dashboard after signing in.`,
       })
     }
   }
-
-  const inviteUrl = invitationId
-    ? `${typeof window !== "undefined" ? window.location.origin : ""}/accept-invitation/${invitationId}`
-    : null
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
@@ -102,23 +97,19 @@ export function InviteMemberDialog() {
         Invite member
       </DialogTrigger>
       <DialogContent>
-        {invitationId && inviteUrl ? (
+        {inviteSent ? (
           <>
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
                 <CheckCircleIcon className="size-4 text-emerald-500" />
-                Invitation ready
+                Invitation sent
               </DialogTitle>
               <DialogDescription>
-                Share this link with {email} to give them access.
+                The person you invited should sign in to the dashboard, open{" "}
+                <strong>Invites</strong> in the sidebar, and accept the
+                invitation there.
               </DialogDescription>
             </DialogHeader>
-            <div className="flex items-center gap-2 rounded-md border border-border bg-muted/30 px-3 py-2">
-              <p className="min-w-0 flex-1 truncate font-mono text-[0.65rem] text-muted-foreground">
-                {inviteUrl}
-              </p>
-              <CopyInviteLink invitationId={invitationId} size="sm" />
-            </div>
             <DialogFooter>
               <Button type="button" onClick={() => handleOpenChange(false)}>
                 Done
