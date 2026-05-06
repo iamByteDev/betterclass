@@ -47,9 +47,9 @@ type Invitation = {
 }
 
 const STATUS_STYLES: Record<string, string> = {
-  pending: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
-  accepted: "bg-success/10 text-success",
-  rejected: "bg-destructive/10 text-destructive",
+  pending: "border-warning/20 bg-warning/10 text-warning",
+  accepted: "border-success/20 bg-success/10 text-success",
+  rejected: "border-destructive/20 bg-destructive/10 text-destructive",
   canceled: "border-border bg-input/20 text-muted-foreground dark:bg-input/30",
 }
 
@@ -208,7 +208,7 @@ export function InvitationsPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {invitations.map((inv) => (
+              {invitations.toReversed().map((inv) => (
                 <InvitationRow
                   key={inv.id}
                   invitation={inv}
