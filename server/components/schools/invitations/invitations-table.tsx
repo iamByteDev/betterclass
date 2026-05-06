@@ -51,6 +51,7 @@ const STATUS_STYLES: Record<string, string> = {
   accepted: "border-success/20 bg-success/10 text-success",
   rejected: "border-destructive/20 bg-destructive/10 text-destructive",
   canceled: "border-border bg-input/20 text-muted-foreground dark:bg-input/30",
+  unknown: "border-border bg-input/20 text-muted-foreground dark:bg-input/30",
 }
 
 function statusLabel(status: string) {
@@ -75,15 +76,20 @@ function InvitationRow({
 
   async function handleCancel() {
     setIsCanceling(true)
-    const { error } = await authClient.organization.cancelInvitation({
-      invitationId: invitation.id,
-    })
-    setIsCanceling(false)
-    if (error) {
-      toast.error("Failed to cancel", { description: error.message })
-      return
+    try {
+      const { error } = await authClient.organization.cancelInvitation({
+        invitationId: invitation.id,
+      })
+      if (error) {
+        toast.error("Failed to cancel", { description: error.message })
+        return
+      }
+      toast.success("Invitation cancelled")
+    } catch {
+      toast.error("Failed to cancel")
+    } finally {
+      setIsCanceling(false)
     }
-    toast.success("Invitation cancelled")
   }
 
   const createdDate = new Date(invitation.createdAt).toLocaleDateString(
@@ -109,7 +115,7 @@ function InvitationRow({
         <Badge
           className={cn(
             "border",
-            STATUS_STYLES[invitation.status] ?? STATUS_STYLES.pending
+            STATUS_STYLES[invitation.status] ?? STATUS_STYLES.unknown
           )}
         >
           {statusLabel(invitation.status)}

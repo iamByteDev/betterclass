@@ -1,3 +1,4 @@
+import { Fragment } from "react"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -48,7 +49,7 @@ export function DashboardHeader({
             {breadcrumbs.map((crumb, index) => {
               const isLast = index === breadcrumbs.length - 1
               return (
-                <div key={index} className="contents">
+                <Fragment key={index}>
                   <BreadcrumbItem>
                     {isLast || !crumb.href ? (
                       <BreadcrumbPage>{crumb.label}</BreadcrumbPage>
@@ -59,7 +60,7 @@ export function DashboardHeader({
                     )}
                   </BreadcrumbItem>
                   {!isLast && <BreadcrumbSeparator />}
-                </div>
+                </Fragment>
               )
             })}
           </BreadcrumbList>

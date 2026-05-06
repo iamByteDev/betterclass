@@ -42,7 +42,7 @@ function MemberRow({ member }: { member: OrgMember }) {
   const [updateOpen, setUpdateOpen] = useState(false)
   const [removeOpen, setRemoveOpen] = useState(false)
 
-  const isSelf = member.user.email === currentMember?.user.email
+  const isSelf = member.userId === currentMember?.userId
   const canUpdateRole = can({ member: ["update"] }) && !isSelf
   const canRemove = can({ member: ["delete"] }) && !isSelf
 

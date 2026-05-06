@@ -68,25 +68,29 @@ export function InviteMemberDialog() {
       validatedRole = role as MemberRole
     }
 
-    const { data, error: inviteError } =
-      await authClient.organization.inviteMember({
-        email: email.trim(),
-        role: validatedRole,
-        organizationId: org.id,
-      })
+    try {
+      const { data, error: inviteError } =
+        await authClient.organization.inviteMember({
+          email: email.trim(),
+          role: validatedRole,
+          organizationId: org.id,
+        })
 
-    setIsSending(false)
+      if (inviteError) {
+        setError(inviteError.message ?? "Failed to send invitation.")
+        return
+      }
 
-    if (inviteError) {
-      setError(inviteError.message ?? "Failed to send invitation.")
-      return
-    }
-
-    if (data?.id) {
-      setInviteSent(true)
-      toast.success("Invitation sent", {
-        description: `${email} can accept it from Invites in the dashboard after signing in.`,
-      })
+      if (data?.id) {
+        setInviteSent(true)
+        toast.success("Invitation sent", {
+          description: `${email} can accept it from Invites in the dashboard after signing in.`,
+        })
+      }
+    } catch {
+      setError("Failed to send invitation.")
+    } finally {
+      setIsSending(false)
     }
   }
 

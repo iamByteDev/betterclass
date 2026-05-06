@@ -27,17 +27,22 @@ function LeaveDialog() {
 
   async function handleLeave() {
     setIsLeaving(true)
-    const { error } = await authClient.organization.leave({
-      organizationId: org.id,
-    })
-    setIsLeaving(false)
-    if (error) {
-      toast.error("Failed to leave", { description: error.message })
-      return
+    try {
+      const { error } = await authClient.organization.leave({
+        organizationId: org.id,
+      })
+      if (error) {
+        toast.error("Failed to leave", { description: error.message })
+        return
+      }
+      toast.success(`Left ${org.name}`)
+      setOpen(false)
+      router.push("/app/schools")
+    } catch {
+      toast.error("Failed to leave")
+    } finally {
+      setIsLeaving(false)
     }
-    toast.success(`Left ${org.name}`)
-    setOpen(false)
-    router.push("/app/schools")
   }
 
   return (
@@ -83,17 +88,22 @@ function DeleteDialog() {
   async function handleDelete() {
     if (!canConfirm) return
     setIsDeleting(true)
-    const { error } = await authClient.organization.delete({
-      organizationId: org.id,
-    })
-    setIsDeleting(false)
-    if (error) {
-      toast.error("Failed to delete", { description: error.message })
-      return
+    try {
+      const { error } = await authClient.organization.delete({
+        organizationId: org.id,
+      })
+      if (error) {
+        toast.error("Failed to delete", { description: error.message })
+        return
+      }
+      toast.success(`${org.name} deleted`)
+      setOpen(false)
+      router.push("/app/schools")
+    } catch {
+      toast.error("Failed to delete")
+    } finally {
+      setIsDeleting(false)
     }
-    toast.success(`${org.name} deleted`)
-    setOpen(false)
-    router.push("/app/schools")
   }
 
   function handleOpenChange(next: boolean) {

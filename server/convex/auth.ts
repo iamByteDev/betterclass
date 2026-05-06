@@ -97,10 +97,13 @@ export const listUserOrgs = query({
   handler: async (ctx) => {
     const { auth, headers } = await authComponent.getAuth(createAuth, ctx)
 
-    const organizations = await auth.api.listOrganizations({
-      headers,
-    })
-    return organizations
+    try {
+      return await auth.api.listOrganizations({
+        headers,
+      })
+    } catch {
+      return []
+    }
   },
 })
 
@@ -111,12 +114,15 @@ export const listOrgInvitations = query({
   handler: async (ctx, { organizationId }) => {
     const { auth, headers } = await authComponent.getAuth(createAuth, ctx)
 
-    const invites = await auth.api.listInvitations({
-      query: {
-        organizationId: organizationId,
-      },
-      headers,
-    })
-    return invites
+    try {
+      return await auth.api.listInvitations({
+        query: {
+          organizationId: organizationId,
+        },
+        headers,
+      })
+    } catch {
+      return []
+    }
   },
 })

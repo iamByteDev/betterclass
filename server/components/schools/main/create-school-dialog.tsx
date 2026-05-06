@@ -40,6 +40,8 @@ export function CreateSchoolDialog() {
   const [error, setError] = useState<string | null>(null)
 
   function handleOpenChange(next: boolean) {
+    if (!next && isSubmitting) return
+
     setOpen(next)
     if (!next) {
       setName("")
@@ -68,19 +70,29 @@ export function CreateSchoolDialog() {
     setIsSubmitting(true)
     setError(null)
 
-    const { error: createError } = await authClient.organization.create({
-      name: name.trim(),
-      slug: slug.trim(),
-    })
+    try {
+      const { error: createError } = await authClient.organization.create({
+        name: name.trim(),
+        slug: slug.trim(),
+      })
 
-    setIsSubmitting(false)
+      if (createError) {
+        setError(
+          createError.message ?? "Something went wrong. Please try again."
+        )
+        return
+      }
 
-    if (createError) {
-      setError(createError.message ?? "Something went wrong. Please try again.")
-      return
+      setOpen(false)
+      setName("")
+      setSlug("")
+      setSlugTouched(false)
+      setError(null)
+    } catch {
+      setError("Something went wrong. Please try again.")
+    } finally {
+      setIsSubmitting(false)
     }
-
-    handleOpenChange(false)
   }
 
   const isValid = name.trim().length > 0 && slug.trim().length > 0
@@ -93,7 +105,7 @@ export function CreateSchoolDialog() {
         <PlusIcon />
         Create school
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent showCloseButton={!isSubmitting}>
         <form onSubmit={handleSubmit} className="contents">
           <DialogHeader>
             <DialogTitle>Create a school</DialogTitle>

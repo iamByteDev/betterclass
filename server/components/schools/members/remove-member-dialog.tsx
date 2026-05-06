@@ -34,17 +34,22 @@ export function RemoveMemberDialog({
 
   async function handleRemove() {
     setIsRemoving(true)
-    const { error } = await authClient.organization.removeMember({
-      memberIdOrEmail: member.user.email,
-      organizationId: org.id,
-    })
-    setIsRemoving(false)
-    if (error) {
-      toast.error("Failed to remove member", { description: error.message })
-      return
+    try {
+      const { error } = await authClient.organization.removeMember({
+        memberIdOrEmail: member.user.email,
+        organizationId: org.id,
+      })
+      if (error) {
+        toast.error("Failed to remove member", { description: error.message })
+        return
+      }
+      toast.success(`${member.user.name} removed`)
+      onOpenChange(false)
+    } catch {
+      toast.error("Failed to remove member")
+    } finally {
+      setIsRemoving(false)
     }
-    toast.success(`${member.user.name} removed`)
-    onOpenChange(false)
   }
 
   return (
@@ -81,6 +86,7 @@ export function RemoveMemberTrigger({ member }: { member: OrgMember }) {
         render={
           <button
             type="button"
+            aria-label={`Remove ${member.user.name}`}
             onClick={() => setOpen(true)}
             className="w-full px-2 py-1.5 text-start text-xs text-destructive hover:bg-accent focus:outline-none"
           />

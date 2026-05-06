@@ -59,10 +59,7 @@ export default function SchoolLayout({
   }
 
   const currentMember =
-    org.members.find(
-      (m: { user: { email: string } }) =>
-        m.user.email === session.data?.user.email
-    ) ?? null
+    org.members.find((m) => m.userId === session.data?.user.id) ?? null
 
   return (
     <SchoolProvider organization={org} currentMember={currentMember}>
