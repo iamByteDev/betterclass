@@ -128,9 +128,6 @@ export function GeneralForm() {
                     "focus-within:border-destructive focus-within:ring-destructive/30"
                 )}
               >
-                <span className="shrink-0 text-xs text-muted-foreground select-none">
-                  /
-                </span>
                 <input
                   id="org-slug"
                   type="text"
@@ -138,7 +135,7 @@ export function GeneralForm() {
                   onChange={handleSlugChange}
                   disabled={!canEdit || isSaving}
                   placeholder="riverside-academy"
-                  className="h-7 w-full min-w-0 bg-transparent px-1 py-0.5 text-xs/relaxed outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50"
+                  className="h-7 w-full min-w-0 bg-transparent py-0.5 pr-1 text-xs/relaxed outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50"
                 />
                 {slugState === "checking" && (
                   <Loader2Icon className="size-3.5 animate-spin text-muted-foreground" />

@@ -1,7 +1,7 @@
 "use client"
 
-import { use, useEffect } from "react"
-import { notFound, redirect } from "next/navigation"
+import { use } from "react"
+import { redirect } from "next/navigation"
 import { authClient } from "@/lib/auth-client"
 import { useSchool } from "@/hooks/use-school"
 import { SchoolProvider } from "@/components/schools/school-context"
@@ -10,15 +10,7 @@ import { SidebarWrapper } from "@/components/dashboard/sidebar-wrapper"
 import { DashboardHeader } from "@/components/dashboard/header"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Skeleton } from "@/components/ui/skeleton"
-
-function getInitials(name: string) {
-  return name
-    .split(" ")
-    .map((w) => w[0])
-    .slice(0, 2)
-    .join("")
-    .toUpperCase()
-}
+import { getInitials } from "@/lib/utils"
 
 function LayoutSkeleton() {
   return (
@@ -58,12 +50,6 @@ export default function SchoolLayout({
   const session = authClient.useSession()
   const { data: org, isPending, error } = useSchool(schoolSlug)
 
-  useEffect(() => {
-    if (org) {
-      void authClient.organization.setActive({ organizationSlug: schoolSlug })
-    }
-  }, [org, schoolSlug])
-
   if (isPending || session.isPending) {
     return <LayoutSkeleton />
   }
@@ -95,7 +81,7 @@ export default function SchoolLayout({
             </Avatar>
             <div className="flex flex-col gap-0.5">
               <h1 className="text-sm font-semibold">{org.name}</h1>
-              <p className="text-xs text-muted-foreground">/{org.slug}</p>
+              <p className="text-xs text-muted-foreground">{org.slug}</p>
             </div>
           </div>
           <SchoolTabs baseHref={`/app/schools/${schoolSlug}`} />

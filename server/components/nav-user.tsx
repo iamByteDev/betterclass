@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/sidebar"
 import { api } from "@/convex/_generated/api"
 import { authClient } from "@/lib/auth-client"
+import { getInitials } from "@/lib/utils"
 import { useQuery } from "convex/react"
 import {
   ChevronsUpDownIcon,
@@ -60,12 +61,7 @@ export function NavUser() {
     }
   }
 
-  const initials = user.name
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2)
+  const initials = getInitials(user.name)
 
   return (
     <SidebarMenu>
