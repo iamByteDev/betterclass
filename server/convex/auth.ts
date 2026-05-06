@@ -6,7 +6,7 @@ import { query } from "./_generated/server"
 import { betterAuth, type BetterAuthOptions } from "better-auth/minimal"
 import authConfig from "./auth.config"
 import authSchema from "./betterAuth/schema"
-import { ConvexError } from "convex/values"
+import { ConvexError, v } from "convex/values"
 import { organization } from "better-auth/plugins"
 
 const siteUrl = process.env.SITE_URL!
@@ -66,5 +66,21 @@ export const getCurrentUser = query({
       }
       throw error
     })
+  },
+})
+
+export const getOrgData = query({
+  args: {
+    organizationSlug: v.optional(v.string()),
+  },
+  handler: async (ctx, { organizationSlug }) => {
+    const { auth, headers } = await authComponent.getAuth(createAuth, ctx)
+    const organization = await auth.api.getFullOrganization({
+      query: {
+        organizationSlug: organizationSlug,
+      },
+      headers,
+    })
+    return organization
   },
 })

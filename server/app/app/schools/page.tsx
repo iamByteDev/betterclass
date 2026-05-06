@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { authClient } from "@/lib/auth-client"
 import { useCheckOrgSlug } from "@/hooks/use-check-org-slug"
 import { DashboardHeader } from "@/components/dashboard/header"
@@ -283,36 +284,39 @@ export default function SchoolsPage() {
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {organizations.map((org) => (
-              <Card
+              <Link
                 key={org.id}
-                className="cursor-pointer transition-shadow duration-150 hover:shadow-md"
+                href={`/app/schools/${org.slug}/general`}
+                className="group outline-none"
               >
-                <CardHeader>
-                  <div className="flex items-center gap-3">
-                    <Avatar size="lg">
-                      {org.logo && (
-                        <AvatarImage src={org.logo} alt={org.name} />
-                      )}
-                      <AvatarFallback>{getInitials(org.name)}</AvatarFallback>
-                    </Avatar>
-                    <div className="flex min-w-0 flex-col gap-0.5">
-                      <CardTitle className="truncate">{org.name}</CardTitle>
-                      <CardDescription className="truncate">
-                        /{org.slug}
-                      </CardDescription>
+                <Card className="h-full transition-shadow duration-150 group-hover:shadow-md group-focus-visible:ring-2 group-focus-visible:ring-ring">
+                  <CardHeader>
+                    <div className="flex items-center gap-3">
+                      <Avatar size="lg">
+                        {org.logo && (
+                          <AvatarImage src={org.logo} alt={org.name} />
+                        )}
+                        <AvatarFallback>{getInitials(org.name)}</AvatarFallback>
+                      </Avatar>
+                      <div className="flex min-w-0 flex-col gap-0.5">
+                        <CardTitle className="truncate">{org.name}</CardTitle>
+                        <CardDescription className="truncate">
+                          /{org.slug}
+                        </CardDescription>
+                      </div>
                     </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-xs text-muted-foreground">
-                    Joined{" "}
-                    {new Date(org.createdAt).toLocaleDateString("en-GB", {
-                      month: "short",
-                      year: "numeric",
-                    })}
-                  </p>
-                </CardContent>
-              </Card>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-xs text-muted-foreground">
+                      Joined{" "}
+                      {new Date(org.createdAt).toLocaleDateString("en-GB", {
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </p>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
         )}
