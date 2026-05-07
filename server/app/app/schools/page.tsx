@@ -9,6 +9,7 @@ import { useQuery } from "convex/react"
 import { api } from "@/convex/_generated/api"
 import { CreateSchoolDialog } from "@/components/schools/main/create-school-dialog"
 import { OrganizationCard } from "@/components/schools/main/organization-card"
+import { useCreateDialogOpen } from "@/app/app/schools/use-create-dialog-open"
 
 function SchoolCardSkeleton() {
   return (
@@ -49,6 +50,7 @@ export default function SchoolsPage() {
   const organizations = useQuery(api.auth.listUserOrgs)
   const isPending = organizations === undefined
 
+  const { isCreateDialogOpen, setIsCreateDialogOpen } = useCreateDialogOpen()
   return (
     <SidebarWrapper>
       <DashboardHeader breadcrumbs={[{ label: "Schools" }]} />
@@ -60,7 +62,10 @@ export default function SchoolsPage() {
               Organisations you are a member of.
             </p>
           </div>
-          <CreateSchoolDialog />
+          <CreateSchoolDialog
+            open={isCreateDialogOpen}
+            setOpen={setIsCreateDialogOpen}
+          />
         </div>
 
         {isPending ? (

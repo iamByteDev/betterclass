@@ -31,8 +31,18 @@ import {
 } from "lucide-react"
 import { cn, toSlug } from "@/lib/utils"
 
-export function CreateSchoolDialog() {
-  const [open, setOpen] = useState(false)
+export function CreateSchoolDialog({
+  open: consumerOpen,
+  setOpen: consumerSetOpen,
+}: {
+  open: boolean
+  setOpen: (open: boolean) => void
+}) {
+  const [_open, _setOpen] = useState(false)
+
+  const open = consumerOpen ?? _open
+  const setOpen = consumerSetOpen ?? _setOpen
+
   const [name, setName] = useState("")
   const [slug, setSlug] = useState("")
   const [slugTouched, setSlugTouched] = useState(false)
