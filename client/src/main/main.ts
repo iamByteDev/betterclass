@@ -1,6 +1,9 @@
-import { moveMouse, getMousePos } from 'robotjs'
+import { moveMouse, getMousePos, mouseClick } from 'robotjs'
 import { Peer } from 'peerjs'
 import { activeWindow } from 'get-windows'
+import { on } from 'events'
+
+let windowNameLock: string | undefined
 function keepMouseAtCenter() {
   // Set the interval so the app remains responsive
   setInterval(() => {
@@ -23,7 +26,10 @@ function castTeacher() {
 async function getCurrentWindow() {
   let windowdatajson = await activeWindow()
   let windowDataTitle = windowdatajson?.title
-  console.log(windowDataTitle)
+  if (windowDataTitle != windowNameLock) {
+    windowNameLock = windowDataTitle
+    //TODO -> push to convex
+  }
 }
 
-getCurrentWindow()
+setInterval(getCurrentWindow, 1000)
