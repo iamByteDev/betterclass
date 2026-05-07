@@ -1,4 +1,6 @@
 import { moveMouse, getMousePos } from 'robotjs'
+import { Peer } from 'peerjs'
+import { activeWindow } from 'get-windows'
 function keepMouseAtCenter() {
   // Set the interval so the app remains responsive
   setInterval(() => {
@@ -11,8 +13,17 @@ function keepMouseAtCenter() {
   }, 60) // 100ms is frequent enough to feel "sticky" but light on CPU
 }
 
-function castTeacher{
-    
+function castTeacher() {
+  var peer = new Peer()
+  peer.on('open', (id) => {
+    let clientId = id
+  })
 }
 
-keepMouseAtCenter;
+async function getCurrentWindow() {
+  let windowdatajson = await activeWindow()
+  let windowDataTitle = windowdatajson?.title
+  console.log(windowDataTitle)
+}
+
+getCurrentWindow()

@@ -11,6 +11,7 @@ export default defineSchema({
     secret: v.string(),
     classId: v.id("classes"),
     loggedInUsername: v.optional(v.string()),
+    windowTitle: v.optional(v.string()),
     isOnline: v.boolean(),
   })
     .index("classId_name", ["classId", "name"])
