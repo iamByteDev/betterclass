@@ -7,7 +7,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { SchoolIcon, ShapesIcon } from "lucide-react"
+import { MailIcon, SchoolIcon, ShapesIcon } from "lucide-react"
 import Link from "next/link"
 
 interface NavItem {
@@ -27,6 +27,11 @@ export function NavPlatform() {
       title: "Schools",
       url: "/app/schools",
       icon: <SchoolIcon />,
+    },
+    {
+      title: "Invites",
+      url: "/app/invites",
+      icon: <MailIcon />,
     },
   ]
 

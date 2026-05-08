@@ -112,3 +112,14 @@ export const listOrgInvitations = query({
     }
   },
 })
+
+export const listUserInvitations = query({
+  handler: async (ctx) => {
+    const { auth, headers } = await getAuth(ctx)
+
+    const invitations = await auth.api.listUserInvitations({
+      headers,
+    })
+    return invitations
+  },
+})
