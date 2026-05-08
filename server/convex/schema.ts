@@ -5,7 +5,7 @@ export default defineSchema({
   classes: defineTable({
     name: v.string(),
     organizationId: v.string(),
-  }),
+  }).index("orgClasses", ["organizationId"]),
   classClients: defineTable({
     name: v.string(),
     secret: v.string(),

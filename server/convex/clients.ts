@@ -29,3 +29,23 @@ export const isValidClient = query({
     return true
   },
 })
+
+export const updateWindowName = mutation({
+  args: {
+    currentWindow: v.optional(v.string()),
+    clientSecret: v.string(),
+  },
+  handler: async (ctx, { clientSecret, currentWindow }) => {
+    const clientData = await ctx.db
+      .query("classClients")
+      .withIndex("secret", (q) => q.eq("secret", clientSecret))
+      .unique()
+    if (clientData == null) {
+      return false
+    }
+    await ctx.db.patch("classClients", clientData._id, {
+      windowTitle: currentWindow,
+    })
+    return true
+  },
+})
