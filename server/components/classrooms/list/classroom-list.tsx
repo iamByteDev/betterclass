@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/empty"
 import { Skeleton } from "@/components/ui/skeleton"
 import { CreateClassroomDialog } from "./create-classroom-dialog"
-import { ClassroomCard } from "@/components/dashboard/classroom-card"
+import { ClassroomCard } from "./classroom-card"
 
 export function ClassroomList() {
   const activeOrg = authClient.useActiveOrganization()

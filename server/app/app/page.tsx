@@ -1,6 +1,6 @@
 import { DashboardHeader } from "@/components/dashboard/header"
 import { SchoolSelected } from "@/components/dashboard/school-selected"
-import { ClassroomList } from "@/components/dashboard/classroom-list"
+import { ClassroomList } from "@/components/classrooms/list/classroom-list"
 
 export default function Page() {
   return (
