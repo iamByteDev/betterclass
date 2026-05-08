@@ -8,7 +8,7 @@ export async function deleteOrgClassrooms(
 ) {
   const classrooms = await ctx.db
     .query("classrooms")
-    .withIndex("orgClassrooms", (q) => q.eq("organizationId", organizationId))
+    .withIndex("by_organization", (q) => q.eq("organizationId", organizationId))
     .collect()
 
   for (const classroom of classrooms) {
@@ -48,7 +48,9 @@ export const listClassrooms = query({
     // Get all classrooms for the organization
     const classrooms = await ctx.db
       .query("classrooms")
-      .withIndex("orgClassrooms", (q) => q.eq("organizationId", organizationId))
+      .withIndex("by_organization", (q) =>
+        q.eq("organizationId", organizationId)
+      )
       .collect()
 
     return { classrooms: classrooms }

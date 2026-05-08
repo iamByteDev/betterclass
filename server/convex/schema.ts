@@ -5,7 +5,7 @@ export default defineSchema({
   classrooms: defineTable({
     name: v.string(),
     organizationId: v.string(),
-  }).index("orgClassrooms", ["organizationId"]),
+  }).index("by_organization", ["organizationId"]),
   classroomClients: defineTable({
     name: v.string(),
     secret: v.string(),
@@ -14,6 +14,6 @@ export default defineSchema({
     windowTitle: v.optional(v.string()),
     isOnline: v.boolean(),
   })
-    .index("classId_name", ["classId", "name"])
-    .index("secret", ["secret"]),
+    .index("by_classId_name", ["classId", "name"])
+    .index("by_secret", ["secret"]),
 })
