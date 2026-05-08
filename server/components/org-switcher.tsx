@@ -37,7 +37,7 @@ export function OrgSwitcher() {
   const router = useRouter()
   const { isMobile } = useSidebar()
 
-  const queriedOrgs = useQuery(api.auth.listUserOrgs)
+  const queriedOrgs = useQuery(api.organization.listUserOrgs)
   const orgs =
     queriedOrgs?.map((orgData) => {
       const logo = <OrgInitials org={orgData} />

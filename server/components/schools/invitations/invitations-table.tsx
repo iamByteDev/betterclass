@@ -170,7 +170,7 @@ export function InvitationsPage() {
   const canInvite = can({ invitation: ["create"] })
   const canCancel = can({ invitation: ["cancel"] })
 
-  const invitations = useQuery(api.auth.listOrgInvitations, {
+  const invitations = useQuery(api.organization.listOrgInvitations, {
     organizationId: org.id,
   })
   const isPending = invitations === undefined

@@ -4,12 +4,12 @@ import { useQuery } from "convex/react"
 import { api } from "@/convex/_generated/api"
 
 export type FullOrganization = NonNullable<
-  (typeof api.auth.getOrgData)["_returnType"]
+  (typeof api.organization.getOrgData)["_returnType"]
 >
 export type OrgMember = FullOrganization["members"][number]
 
 export function useSchool(organizationSlug: string) {
-  const orgData = useQuery(api.auth.getOrgData, {
+  const orgData = useQuery(api.organization.getOrgData, {
     organizationSlug,
   })
   const isPending = orgData === undefined

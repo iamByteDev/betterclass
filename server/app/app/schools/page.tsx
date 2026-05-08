@@ -47,7 +47,7 @@ function EmptyState() {
 }
 
 export default function SchoolsPage() {
-  const organizations = useQuery(api.auth.listUserOrgs)
+  const organizations = useQuery(api.organization.listUserOrgs)
   const isPending = organizations === undefined
 
   const { isCreateDialogOpen, setIsCreateDialogOpen } = useCreateDialogOpen()
