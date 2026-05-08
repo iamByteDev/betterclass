@@ -1,6 +1,6 @@
 import { v } from "convex/values"
 import { mutation, query } from "./_generated/server"
-import { organization } from "better-auth/plugins"
+import { getAuth } from "./auth"
 
 export const listClasses = query({
   args: {
@@ -12,8 +12,22 @@ export const listClasses = query({
       return []
     }
 
-    // TODO: make sure user is in the org
+    // Make sure user has read permission for org's classes
+    const { auth, headers } = await getAuth(ctx)
+    const { success: hasPermission } = await auth.api.hasPermission({
+      body: {
+        organizationId: organizationId,
+        permissions: {
+          class: ["read"],
+        },
+      },
+      headers,
+    })
+    if (!hasPermission) {
+      return []
+    }
 
+    // Get all classes for the organization
     const classes = await ctx.db
       .query("classes")
       .withIndex("orgClasses", (q) => q.eq("organizationId", organizationId))
@@ -34,9 +48,23 @@ export const createClass = mutation({
       return false
     }
 
-    // TODO: make sure user has permission to create class
+    // Make sure user has create permission for org's classes
+    const { auth, headers } = await getAuth(ctx)
+    const { success: hasPermission } = await auth.api.hasPermission({
+      body: {
+        organizationId: organizationId,
+        permissions: {
+          class: ["create"],
+        },
+      },
+      headers,
+    })
+    if (!hasPermission) {
+      return false
+    }
 
-    const createClass = await ctx.db.insert("classes", {
+    // Create the class
+    await ctx.db.insert("classes", {
       name: className,
       organizationId: organizationId,
     })
@@ -54,8 +82,28 @@ export const deleteClass = mutation({
       return false
     }
 
-    // TODO: make sure user has perms to delete class
+    // Get the class
+    const classData = await ctx.db.get("classes", classId)
+    if (!classData) {
+      return false
+    }
 
+    // Make sure user has delete permission for org's classes
+    const { auth, headers } = await getAuth(ctx)
+    const { success: hasPermission } = await auth.api.hasPermission({
+      body: {
+        organizationId: classData.organizationId,
+        permissions: {
+          class: ["delete"],
+        },
+      },
+      headers,
+    })
+    if (!hasPermission) {
+      return false
+    }
+
+    // Delete the class
     await ctx.db.delete("classes", classId)
     return true
   },
@@ -72,8 +120,28 @@ export const renameClass = mutation({
       return false
     }
 
-    //todo check if user has perms to rename class
+    // Get the class
+    const classData = await ctx.db.get("classes", classId)
+    if (!classData) {
+      return false
+    }
 
+    // Make sure user has update permission for org's classes
+    const { auth, headers } = await getAuth(ctx)
+    const { success: hasPermission } = await auth.api.hasPermission({
+      body: {
+        organizationId: classData.organizationId,
+        permissions: {
+          class: ["update"],
+        },
+      },
+      headers,
+    })
+    if (!hasPermission) {
+      return false
+    }
+
+    // Rename the class
     await ctx.db.patch("classes", classId, {
       name: newName,
     })
