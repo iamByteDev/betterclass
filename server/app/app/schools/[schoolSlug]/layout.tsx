@@ -6,7 +6,6 @@ import { authClient } from "@/lib/auth-client"
 import { useSchool } from "@/hooks/use-school"
 import { SchoolProvider } from "@/components/schools/school-context"
 import { SchoolTabs } from "@/components/schools/school-tabs"
-import { SidebarWrapper } from "@/components/dashboard/sidebar-wrapper"
 import { DashboardHeader } from "@/components/dashboard/header"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -14,7 +13,7 @@ import { getInitials } from "@/lib/utils"
 
 function LayoutSkeleton() {
   return (
-    <SidebarWrapper>
+    <>
       <DashboardHeader
         breadcrumbs={[
           { label: "Schools", href: "/app/schools" },
@@ -35,7 +34,7 @@ function LayoutSkeleton() {
           <Skeleton className="mb-2.5 h-3 w-20" />
         </div>
       </div>
-    </SidebarWrapper>
+    </>
   )
 }
 
@@ -63,7 +62,7 @@ export default function SchoolLayout({
 
   return (
     <SchoolProvider organization={org} currentMember={currentMember}>
-      <SidebarWrapper>
+      <>
         <DashboardHeader
           breadcrumbs={[
             { label: "Schools", href: "/app/schools" },
@@ -84,7 +83,7 @@ export default function SchoolLayout({
           <SchoolTabs baseHref={`/app/schools/${schoolSlug}`} />
           <div className="pt-6">{children}</div>
         </div>
-      </SidebarWrapper>
+      </>
     </SchoolProvider>
   )
 }

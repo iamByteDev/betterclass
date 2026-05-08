@@ -1,7 +1,6 @@
 "use client"
 
 import { DashboardHeader } from "@/components/dashboard/header"
-import { SidebarWrapper } from "@/components/dashboard/sidebar-wrapper"
 import { Card, CardHeader, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { SchoolIcon } from "lucide-react"
@@ -52,7 +51,7 @@ export default function SchoolsPage() {
 
   const { isCreateDialogOpen, setIsCreateDialogOpen } = useCreateDialogOpen()
   return (
-    <SidebarWrapper>
+    <>
       <DashboardHeader breadcrumbs={[{ label: "Schools" }]} />
       <div className="flex flex-1 flex-col gap-6 p-4 pt-0">
         <div className="flex items-center justify-between gap-4">
@@ -84,6 +83,6 @@ export default function SchoolsPage() {
           </div>
         )}
       </div>
-    </SidebarWrapper>
+    </>
   )
 }
