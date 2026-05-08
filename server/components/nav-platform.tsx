@@ -19,7 +19,7 @@ interface NavItem {
 export function NavPlatform() {
   const items: NavItem[] = [
     {
-      title: "Classes",
+      title: "Classrooms",
       url: "/app",
       icon: <ShapesIcon />,
     },

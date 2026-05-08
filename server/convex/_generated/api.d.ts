@@ -9,7 +9,7 @@
  */
 
 import type * as auth from "../auth.js";
-import type * as classes from "../classes.js";
+import type * as classrooms from "../classrooms.js";
 import type * as clients from "../clients.js";
 import type * as http from "../http.js";
 import type * as organization from "../organization.js";
@@ -22,7 +22,7 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
-  classes: typeof classes;
+  classrooms: typeof classrooms;
   clients: typeof clients;
   http: typeof http;
   organization: typeof organization;

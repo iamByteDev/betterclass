@@ -2,7 +2,7 @@ import { v } from "convex/values"
 import { mutation, query } from "./_generated/server"
 import { getAuth } from "./auth"
 
-export const listClasses = query({
+export const listClassrooms = query({
   args: {
     organizationId: v.string(),
   },
@@ -12,13 +12,13 @@ export const listClasses = query({
       return []
     }
 
-    // Make sure user has read permission for org's classes
+    // Make sure user has read permission for org's classrooms
     const { auth, headers } = await getAuth(ctx)
     const { success: hasPermission } = await auth.api.hasPermission({
       body: {
         organizationId: organizationId,
         permissions: {
-          class: ["read"],
+          classroom: ["read"],
         },
       },
       headers,
@@ -27,34 +27,34 @@ export const listClasses = query({
       return []
     }
 
-    // Get all classes for the organization
-    const classes = await ctx.db
-      .query("classes")
-      .withIndex("orgClasses", (q) => q.eq("organizationId", organizationId))
+    // Get all classrooms for the organization
+    const classrooms = await ctx.db
+      .query("classrooms")
+      .withIndex("orgClassrooms", (q) => q.eq("organizationId", organizationId))
       .collect()
 
-    return classes
+    return classrooms
   },
 })
 
-export const createClass = mutation({
+export const createClassroom = mutation({
   args: {
     organizationId: v.string(),
-    className: v.string(),
+    classroomName: v.string(),
   },
-  handler: async (ctx, { organizationId, className }) => {
+  handler: async (ctx, { organizationId, classroomName }) => {
     const userIdentity = await ctx.auth.getUserIdentity()
     if (!userIdentity) {
       return false
     }
 
-    // Make sure user has create permission for org's classes
+    // Make sure user has create permission for org's classrooms
     const { auth, headers } = await getAuth(ctx)
     const { success: hasPermission } = await auth.api.hasPermission({
       body: {
         organizationId: organizationId,
         permissions: {
-          class: ["create"],
+          classroom: ["create"],
         },
       },
       headers,
@@ -63,38 +63,38 @@ export const createClass = mutation({
       return false
     }
 
-    // Create the class
-    await ctx.db.insert("classes", {
-      name: className,
+    // Create the classroom
+    await ctx.db.insert("classrooms", {
+      name: classroomName,
       organizationId: organizationId,
     })
     return true
   },
 })
 
-export const deleteClass = mutation({
+export const deleteClassroom = mutation({
   args: {
-    classId: v.id("classes"),
+    classroomId: v.id("classrooms"),
   },
-  handler: async (ctx, { classId }) => {
+  handler: async (ctx, { classroomId }) => {
     const userIdentity = await ctx.auth.getUserIdentity()
     if (!userIdentity) {
       return false
     }
 
-    // Get the class
-    const classData = await ctx.db.get("classes", classId)
-    if (!classData) {
+    // Get the classroom
+    const classroom = await ctx.db.get("classrooms", classroomId)
+    if (!classroom) {
       return false
     }
 
-    // Make sure user has delete permission for org's classes
+    // Make sure user has delete permission for org's classrooms
     const { auth, headers } = await getAuth(ctx)
     const { success: hasPermission } = await auth.api.hasPermission({
       body: {
-        organizationId: classData.organizationId,
+        organizationId: classroom.organizationId,
         permissions: {
-          class: ["delete"],
+          classroom: ["delete"],
         },
       },
       headers,
@@ -103,36 +103,36 @@ export const deleteClass = mutation({
       return false
     }
 
-    // Delete the class
-    await ctx.db.delete("classes", classId)
+    // Delete the classroom
+    await ctx.db.delete("classrooms", classroomId)
     return true
   },
 })
 
-export const renameClass = mutation({
+export const renameClassroom = mutation({
   args: {
-    classId: v.id("classes"),
+    classroomId: v.id("classrooms"),
     newName: v.string(),
   },
-  handler: async (ctx, { classId, newName }) => {
+  handler: async (ctx, { classroomId, newName }) => {
     const userIdentity = await ctx.auth.getUserIdentity()
     if (!userIdentity) {
       return false
     }
 
-    // Get the class
-    const classData = await ctx.db.get("classes", classId)
-    if (!classData) {
+    // Get the classroom
+    const classroom = await ctx.db.get("classrooms", classroomId)
+    if (!classroom) {
       return false
     }
 
-    // Make sure user has update permission for org's classes
+    // Make sure user has update permission for org's classrooms
     const { auth, headers } = await getAuth(ctx)
     const { success: hasPermission } = await auth.api.hasPermission({
       body: {
-        organizationId: classData.organizationId,
+        organizationId: classroom.organizationId,
         permissions: {
-          class: ["update"],
+          classroom: ["update"],
         },
       },
       headers,
@@ -141,8 +141,8 @@ export const renameClass = mutation({
       return false
     }
 
-    // Rename the class
-    await ctx.db.patch("classes", classId, {
+    // Rename the classroom
+    await ctx.db.patch("classrooms", classroomId, {
       name: newName,
     })
     return true

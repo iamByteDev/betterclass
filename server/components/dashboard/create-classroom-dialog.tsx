@@ -18,19 +18,19 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 
-interface CreateClassDialogProps {
+interface CreateClassroomDialogProps {
   organizationId: string
   children?: React.ReactNode
 }
 
-export function CreateClassDialog({
+export function CreateClassroomDialog({
   organizationId,
   children,
-}: CreateClassDialogProps) {
+}: CreateClassroomDialogProps) {
   const [open, setOpen] = useState(false)
   const [name, setName] = useState("")
   const [isPending, setIsPending] = useState(false)
-  const createClass = useMutation(api.classes.createClass)
+  const createClassroom = useMutation(api.classrooms.createClassroom)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -39,7 +39,7 @@ export function CreateClassDialog({
 
     setIsPending(true)
     try {
-      await createClass({ organizationId, className: trimmed })
+      await createClassroom({ organizationId, classroomName: trimmed })
       setOpen(false)
       setName("")
     } finally {
@@ -61,23 +61,23 @@ export function CreateClassDialog({
           ) : (
             <Button size="sm">
               <PlusIcon />
-              New class
+              New classroom
             </Button>
           )
         }
       />
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>New class</DialogTitle>
+          <DialogTitle>New classroom</DialogTitle>
           <DialogDescription>
-            Give your class a name to get started.
+            Give your classroom a name to get started.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor="class-name">Class name</Label>
+            <Label htmlFor="classroom-name">Classroom name</Label>
             <Input
-              id="class-name"
+              id="classroom-name"
               placeholder="e.g. Biology 101"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -97,7 +97,7 @@ export function CreateClassDialog({
               type="submit"
               disabled={!name.trim() || isPending}
             >
-              {isPending ? "Creating…" : "Create class"}
+              {isPending ? "Creating…" : "Create classroom"}
             </Button>
           </DialogFooter>
         </form>

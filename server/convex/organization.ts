@@ -17,22 +17,22 @@ import { getAuth } from "./auth"
 // Access Control
 const accessControlStatements = {
   ...defaultStatements,
-  class: ["create", "read", "update", "delete"],
+  classroom: ["create", "read", "update", "delete"],
 } satisfies Statements
 const ac = createAccessControl(accessControlStatements)
 
 // Roles
 const memberRole = ac.newRole({
   ...memberAc.statements,
-  class: ["read"],
+  classroom: ["read"],
 })
 const adminRole = ac.newRole({
   ...adminAc.statements,
-  class: ["create", "read", "update", "delete"],
+  classroom: ["create", "read", "update", "delete"],
 })
 const ownerRole = ac.newRole({
   ...ownerAc.statements,
-  class: ["create", "read", "update", "delete"],
+  classroom: ["create", "read", "update", "delete"],
 })
 
 const roles = {
@@ -44,7 +44,7 @@ const roles = {
 // Triggers
 export const organizationTriggers: AuthTriggers["organization"] = {
   onDelete: async (ctx, doc) => {
-    // TODO: Delete organization classes
+    // TODO: Delete organization classrooms
     console.log("onDelete", doc)
   },
 }

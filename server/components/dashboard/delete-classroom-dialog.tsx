@@ -15,26 +15,26 @@ import {
   AlertDialogAction,
 } from "@/components/ui/alert-dialog"
 
-interface DeleteClassDialogProps {
-  classId: Id<"classes">
-  className: string
+interface DeleteClassroomDialogProps {
+  classroomId: Id<"classrooms">
+  name: string
   open: boolean
   onOpenChange: (open: boolean) => void
 }
 
-export function DeleteClassDialog({
-  classId,
-  className,
+export function DeleteClassroomDialog({
+  classroomId,
+  name,
   open,
   onOpenChange,
-}: DeleteClassDialogProps) {
+}: DeleteClassroomDialogProps) {
   const [isPending, setIsPending] = useState(false)
-  const deleteClass = useMutation(api.classes.deleteClass)
+  const deleteClassroom = useMutation(api.classrooms.deleteClassroom)
 
   async function handleDelete() {
     setIsPending(true)
     try {
-      await deleteClass({ classId })
+      await deleteClassroom({ classroomId })
       onOpenChange(false)
     } finally {
       setIsPending(false)
@@ -45,9 +45,9 @@ export function DeleteClassDialog({
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent size="sm">
         <AlertDialogHeader>
-          <AlertDialogTitle>Delete class?</AlertDialogTitle>
+          <AlertDialogTitle>Delete classroom?</AlertDialogTitle>
           <AlertDialogDescription>
-            &ldquo;{className}&rdquo; will be permanently deleted.
+            &ldquo;{name}&rdquo; will be permanently deleted.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

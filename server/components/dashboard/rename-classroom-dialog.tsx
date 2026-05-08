@@ -17,60 +17,70 @@ import {
   DialogClose,
 } from "@/components/ui/dialog"
 
-interface RenameClassDialogProps {
-  classId: Id<"classes">
+interface RenameClassroomDialogProps {
+  classroomId: Id<"classrooms">
   currentName: string
   open: boolean
   onOpenChange: (open: boolean) => void
 }
 
-export function RenameClassDialog({
-  classId,
+export function RenameClassroomDialog({
+  classroomId,
   currentName,
   open,
   onOpenChange,
-}: RenameClassDialogProps) {
+}: RenameClassroomDialogProps) {
   const [value, setValue] = useState(currentName)
   const [isPending, setIsPending] = useState(false)
-  const renameClass = useMutation(api.classes.renameClass)
+  const renameClassroom = useMutation(api.classrooms.renameClassroom)
 
   function handleOpenChange(next: boolean) {
     if (!next) setValue(currentName)
     onOpenChange(next)
   }
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
+  async function commitRename() {
     const trimmed = value.trim()
     if (!trimmed || trimmed === currentName) {
-      onOpenChange(false)
+      handleOpenChange(false)
       return
     }
     setIsPending(true)
     try {
-      await renameClass({ classId, newName: trimmed })
-      onOpenChange(false)
+      await renameClassroom({ classroomId, newName: trimmed })
+      handleOpenChange(false)
     } finally {
       setIsPending(false)
     }
+  }
+
+  function handleSubmit(e: React.SubmitEvent) {
+    e.preventDefault()
+    void commitRename()
   }
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Rename class</DialogTitle>
+          <DialogTitle>Rename classroom</DialogTitle>
           <DialogDescription>
             Enter a new name for &ldquo;{currentName}&rdquo;.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor="rename-class">Class name</Label>
+            <Label htmlFor="rename-classroom">Classroom name</Label>
             <Input
-              id="rename-class"
+              id="rename-classroom"
               value={value}
               onChange={(e) => setValue(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault()
+                  void commitRename()
+                }
+              }}
               autoFocus
               disabled={isPending}
             />
@@ -83,7 +93,11 @@ export function RenameClassDialog({
             >
               Cancel
             </DialogClose>
-            <Button type="submit" disabled={!value.trim() || isPending}>
+            <Button
+              type="button"
+              disabled={!value.trim() || isPending}
+              onClick={() => void commitRename()}
+            >
               {isPending ? "Saving…" : "Save"}
             </Button>
           </DialogFooter>

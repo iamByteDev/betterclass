@@ -11,18 +11,18 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu"
-import { RenameClassDialog } from "./rename-class-dialog"
-import { DeleteClassDialog } from "./delete-class-dialog"
+import { RenameClassroomDialog } from "./rename-classroom-dialog"
+import { DeleteClassroomDialog } from "./delete-classroom-dialog"
 
-interface ClassCardActionsProps {
-  classId: Id<"classes">
-  className: string
+interface ClassroomCardActionsProps {
+  classroomId: Id<"classrooms">
+  name: string
 }
 
-export function ClassCardActions({
-  classId,
-  className,
-}: ClassCardActionsProps) {
+export function ClassroomCardActions({
+  classroomId,
+  name,
+}: ClassroomCardActionsProps) {
   const [renameOpen, setRenameOpen] = useState(false)
   const [deleteOpen, setDeleteOpen] = useState(false)
 
@@ -39,7 +39,7 @@ export function ClassCardActions({
           }
         >
           <EllipsisIcon />
-          <span className="sr-only">Class options</span>
+          <span className="sr-only">Classroom options</span>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem onClick={() => setRenameOpen(true)}>
@@ -57,15 +57,15 @@ export function ClassCardActions({
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <RenameClassDialog
-        classId={classId}
-        currentName={className}
+      <RenameClassroomDialog
+        classroomId={classroomId}
+        currentName={name}
         open={renameOpen}
         onOpenChange={setRenameOpen}
       />
-      <DeleteClassDialog
-        classId={classId}
-        className={className}
+      <DeleteClassroomDialog
+        classroomId={classroomId}
+        name={name}
         open={deleteOpen}
         onOpenChange={setDeleteOpen}
       />
