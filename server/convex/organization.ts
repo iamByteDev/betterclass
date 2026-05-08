@@ -13,6 +13,7 @@ import { type AuthTriggers } from "./auth"
 import { query } from "./_generated/server"
 import { v } from "convex/values"
 import { getAuth } from "./auth"
+import { deleteOrgClassrooms } from "./classrooms"
 
 // Access Control
 const accessControlStatements = {
@@ -44,8 +45,7 @@ const roles = {
 // Triggers
 export const organizationTriggers: AuthTriggers["organization"] = {
   onDelete: async (ctx, doc) => {
-    // TODO: Delete organization classrooms
-    console.log("onDelete", doc)
+    await deleteOrgClassrooms(ctx, doc._id)
   },
 }
 

@@ -1,6 +1,21 @@
 import { v } from "convex/values"
-import { mutation, query } from "./_generated/server"
+import { mutation, MutationCtx, query } from "./_generated/server"
 import { getAuth } from "./auth"
+
+export async function deleteOrgClassrooms(
+  ctx: MutationCtx,
+  organizationId: string
+) {
+  const classrooms = await ctx.db
+    .query("classrooms")
+    .withIndex("orgClassrooms", (q) => q.eq("organizationId", organizationId))
+    .collect()
+
+  for (const classroom of classrooms) {
+    await ctx.db.delete("classrooms", classroom._id)
+  }
+  return classrooms.length
+}
 
 export const listClassrooms = query({
   args: {
