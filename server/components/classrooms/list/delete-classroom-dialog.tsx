@@ -14,6 +14,7 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog"
+import { toast } from "sonner"
 
 interface DeleteClassroomDialogProps {
   classroomId: Id<"classrooms">
@@ -34,8 +35,13 @@ export function DeleteClassroomDialog({
   async function handleDelete() {
     setIsPending(true)
     try {
-      await deleteClassroom({ classroomId })
-      onOpenChange(false)
+      const result = await deleteClassroom({ classroomId })
+      if (result.success) {
+        onOpenChange(false)
+        toast.success("Classroom deleted successfully.")
+      } else {
+        toast.error(result.error ?? "Failed to delete classroom.")
+      }
     } finally {
       setIsPending(false)
     }

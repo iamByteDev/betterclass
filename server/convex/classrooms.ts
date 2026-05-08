@@ -24,7 +24,7 @@ export const listClassrooms = query({
   handler: async (ctx, { organizationId }) => {
     const userIdentity = await ctx.auth.getUserIdentity()
     if (!userIdentity) {
-      return []
+      return { classrooms: [] }
     }
 
     // Make sure user has read permission for org's classrooms
@@ -39,7 +39,10 @@ export const listClassrooms = query({
       headers,
     })
     if (!hasPermission) {
-      return []
+      return {
+        classrooms: [],
+        error: "You do not have permission to view classrooms!",
+      }
     }
 
     // Get all classrooms for the organization
@@ -48,7 +51,7 @@ export const listClassrooms = query({
       .withIndex("orgClassrooms", (q) => q.eq("organizationId", organizationId))
       .collect()
 
-    return classrooms
+    return { classrooms: classrooms }
   },
 })
 
@@ -60,7 +63,10 @@ export const createClassroom = mutation({
   handler: async (ctx, { organizationId, classroomName }) => {
     const userIdentity = await ctx.auth.getUserIdentity()
     if (!userIdentity) {
-      return false
+      return {
+        success: false,
+        error: "You must be logged in to create a classroom!",
+      }
     }
 
     // Make sure user has create permission for org's classrooms
@@ -75,7 +81,10 @@ export const createClassroom = mutation({
       headers,
     })
     if (!hasPermission) {
-      return false
+      return {
+        success: false,
+        error: "You do not have permission to create classrooms!",
+      }
     }
 
     // Create the classroom
@@ -83,7 +92,7 @@ export const createClassroom = mutation({
       name: classroomName,
       organizationId: organizationId,
     })
-    return true
+    return { success: true }
   },
 })
 
@@ -94,13 +103,16 @@ export const deleteClassroom = mutation({
   handler: async (ctx, { classroomId }) => {
     const userIdentity = await ctx.auth.getUserIdentity()
     if (!userIdentity) {
-      return false
+      return {
+        success: false,
+        error: "You must be logged in to delete a classroom!",
+      }
     }
 
     // Get the classroom
     const classroom = await ctx.db.get("classrooms", classroomId)
     if (!classroom) {
-      return false
+      return { success: false, error: "Classroom not found!" }
     }
 
     // Make sure user has delete permission for org's classrooms
@@ -115,12 +127,15 @@ export const deleteClassroom = mutation({
       headers,
     })
     if (!hasPermission) {
-      return false
+      return {
+        success: false,
+        error: "You do not have permission to delete classrooms!",
+      }
     }
 
     // Delete the classroom
     await ctx.db.delete("classrooms", classroomId)
-    return true
+    return { success: true }
   },
 })
 
@@ -132,13 +147,16 @@ export const renameClassroom = mutation({
   handler: async (ctx, { classroomId, newName }) => {
     const userIdentity = await ctx.auth.getUserIdentity()
     if (!userIdentity) {
-      return false
+      return {
+        success: false,
+        error: "You must be logged in to rename a classroom!",
+      }
     }
 
     // Get the classroom
     const classroom = await ctx.db.get("classrooms", classroomId)
     if (!classroom) {
-      return false
+      return { success: false, error: "Classroom not found!" }
     }
 
     // Make sure user has update permission for org's classrooms
@@ -153,13 +171,16 @@ export const renameClassroom = mutation({
       headers,
     })
     if (!hasPermission) {
-      return false
+      return {
+        success: false,
+        error: "You do not have permission to rename classrooms!",
+      }
     }
 
     // Rename the classroom
     await ctx.db.patch("classrooms", classroomId, {
       name: newName,
     })
-    return true
+    return { success: true }
   },
 })

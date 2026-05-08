@@ -16,13 +16,24 @@ import {
 import { Skeleton } from "@/components/ui/skeleton"
 import { CreateClassroomDialog } from "./create-classroom-dialog"
 import { ClassroomCard } from "./classroom-card"
+import { useEffect } from "react"
+import { toast } from "sonner"
 
 export function ClassroomList() {
   const activeOrg = authClient.useActiveOrganization()
-  const classrooms = useQuery(
+  const listResult = useQuery(
     api.classrooms.listClassrooms,
     activeOrg.data ? { organizationId: activeOrg.data.id } : "skip"
   )
+  const classrooms = listResult?.classrooms
+  const loadClassroomsError = listResult?.error
+
+  // When loadClassroomsError changes, show it in a toast
+  useEffect(() => {
+    if (loadClassroomsError) {
+      toast.error(loadClassroomsError)
+    }
+  }, [loadClassroomsError])
 
   if (activeOrg.isPending || classrooms === undefined) {
     return (

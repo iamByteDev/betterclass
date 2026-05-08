@@ -16,6 +16,7 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog"
+import { toast } from "sonner"
 
 interface RenameClassroomDialogProps {
   classroomId: Id<"classrooms">
@@ -47,8 +48,13 @@ export function RenameClassroomDialog({
     }
     setIsPending(true)
     try {
-      await renameClassroom({ classroomId, newName: trimmed })
-      handleOpenChange(false)
+      const result = await renameClassroom({ classroomId, newName: trimmed })
+      if (result.success) {
+        handleOpenChange(false)
+        toast.success("Classroom renamed successfully!")
+      } else {
+        toast.error(result.error || "Failed to rename classroom!")
+      }
     } finally {
       setIsPending(false)
     }

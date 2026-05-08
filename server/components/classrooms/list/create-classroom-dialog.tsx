@@ -17,6 +17,7 @@ import {
   DialogClose,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { toast } from "sonner"
 
 interface CreateClassroomDialogProps {
   organizationId: string
@@ -39,8 +40,17 @@ export function CreateClassroomDialog({
 
     setIsPending(true)
     try {
-      await createClassroom({ organizationId, classroomName: trimmed })
-      setOpen(false)
+      const result = await createClassroom({
+        organizationId,
+        classroomName: trimmed,
+      })
+      if (result.success) {
+        toast.success("Classroom created successfully!")
+        setOpen(false)
+      } else {
+        toast.error(result.error ?? "Failed to create classroom!")
+      }
+
       setName("")
     } finally {
       setIsPending(false)
