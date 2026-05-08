@@ -93,10 +93,7 @@ export function CreateClassroomDialog({
             >
               Cancel
             </DialogClose>
-            <Button
-              type="submit"
-              disabled={!name.trim() || isPending}
-            >
+            <Button type="submit" disabled={!name.trim() || isPending}>
               {isPending ? "Creating…" : "Create classroom"}
             </Button>
           </DialogFooter>

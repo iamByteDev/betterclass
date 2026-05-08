@@ -163,11 +163,7 @@ function StatusBadge({ status }: { status: StudentStatus }) {
       </Badge>
     )
   }
-  return (
-    <Badge className="bg-success/15 text-success">
-      Online
-    </Badge>
-  )
+  return <Badge className="bg-success/15 text-success">Online</Badge>
 }
 
 export function ClassroomLayout() {
