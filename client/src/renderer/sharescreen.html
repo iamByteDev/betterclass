@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        video { width: 100%; height: 100%; object-fit: cover; background: black; }
+    </style>
+    <!-- 1. Load the PeerJS library from a CDN -->
+    <script src="https://unpkg.com"></script>
+</head>
+<body>
+    <video id="screenshare" autoplay playsinline></video>
+
+    <script>
+        // 2. PeerJS is now available on the window object
+        const peer = new Peer();
+        const vid = document.getElementById("screenshare");
+
+        peer.on("open", (id) => {
+            console.log("My Peer ID is: " + id);
+        });
+
+        peer.on("call", async (call) => {
+            try {
+                // 3. You MUST get a stream to answer the call (even if empty)
+                const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                
+                call.answer(mediaStream); // Answer with your own stream
+                
+                call.on("stream", (remoteStream) => {
+                    // 4. Input the remote stream to the video element
+                    vid.srcObject = remoteStream;
+                });
+            } catch (err) {
+                console.error("Failed to get local stream", err);
+            }
+        });
+    </script>
+</body>
+</html>
