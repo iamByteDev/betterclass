@@ -19,7 +19,7 @@ export const isValidClient = query({
   },
   handler: async (ctx, { clientSecret }) => {
     const clientData = await ctx.db
-      .query("classClients")
+      .query("classroomClients")
       .withIndex("secret", (q) => q.eq("secret", clientSecret))
       .unique()
 
@@ -37,13 +37,13 @@ export const updateWindowName = mutation({
   },
   handler: async (ctx, { clientSecret, currentWindow }) => {
     const clientData = await ctx.db
-      .query("classClients")
+      .query("classroomClients")
       .withIndex("secret", (q) => q.eq("secret", clientSecret))
       .unique()
     if (clientData == null) {
       return false
     }
-    await ctx.db.patch("classClients", clientData._id, {
+    await ctx.db.patch("classroomClients", clientData._id, {
       windowTitle: currentWindow,
     })
     return true
