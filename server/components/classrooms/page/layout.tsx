@@ -15,8 +15,10 @@ import {
   MonitorOff,
   WifiOff,
   GraduationCap,
+  UserPlus,
 } from "lucide-react"
 import Link from "next/link"
+import { AddClientsDialog } from "./add-clients-dialog"
 
 type StudentStatus = "online" | "offline" | "locked"
 
@@ -169,6 +171,7 @@ function StatusBadge({ status }: { status: StudentStatus }) {
 export function ClassroomLayout() {
   const [isLocked, setIsLocked] = useState(false)
   const [isSharing, setIsSharing] = useState(false)
+  const [isAddClientsOpen, setIsAddClientsOpen] = useState(false)
 
   return (
     <div className="flex h-screen flex-col bg-background">
@@ -200,6 +203,25 @@ export function ClassroomLayout() {
 
         {/* Right: Actions */}
         <div className="flex items-center gap-2">
+          {/* Add Clients */}
+          <Tooltip>
+            <TooltipTrigger
+              render={
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="gap-1.5"
+                  onClick={() => setIsAddClientsOpen(true)}
+                >
+                  <UserPlus className="h-3.5 w-3.5" />
+                  <span className="hidden sm:inline">Add Clients</span>
+                </Button>
+              }
+            />
+            <TooltipContent>
+              <p>Setup clients with a class code</p>
+            </TooltipContent>
+          </Tooltip>
           {/* Lock / Unlock */}
           {isLocked ? (
             <Tooltip>
@@ -289,9 +311,14 @@ export function ClassroomLayout() {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
           </span>
-          Broadcasting your screen to all students
+          Broadcasting your screen to students
         </div>
       )}
+
+      <AddClientsDialog
+        open={isAddClientsOpen}
+        onOpenChange={setIsAddClientsOpen}
+      />
 
       {/* Grid */}
       <main className="flex-1 overflow-y-auto p-4">
