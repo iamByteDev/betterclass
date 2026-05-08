@@ -14,7 +14,7 @@ export const updateWindowName = mutation({
       .withIndex("secret", (q) => q.eq("secret", clientSecret))
       .unique()
     if (clientData == null) {
-      throw new Error("your bad haxx choices <3 u suk")
+      throw new Error("YOU. SHALL NOT. PASS!!")
       return false
     }
     await ctx.db.patch("classClients", clientData._id, {
