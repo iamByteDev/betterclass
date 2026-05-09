@@ -1,6 +1,7 @@
 import { v } from "convex/values"
 import { mutation, MutationCtx, query } from "./_generated/server"
 import { getAuth } from "./auth"
+import { Id } from "./_generated/dataModel"
 
 export async function deleteOrgClassrooms(
   ctx: MutationCtx,
@@ -184,5 +185,43 @@ export const renameClassroom = mutation({
       name: newName,
     })
     return { success: true }
+  },
+})
+
+export const getClassroomInfo = query({
+  args: {
+    classroomId: v.string(),
+  },
+  handler: async (ctx, { classroomId }) => {
+    const userIdentity = await ctx.auth.getUserIdentity()
+    if (!userIdentity) {
+      return null
+    }
+
+    // Get the classroom
+    const classroomData = await ctx.db
+      .query("classrooms")
+      .withIndex("by_id", (q) => q.eq("_id", classroomId as Id<"classrooms">))
+      .unique()
+    if (!classroomData) {
+      return null
+    }
+
+    // Make sure user has read permission for org's classrooms
+    const { auth, headers } = await getAuth(ctx)
+    const { success: hasPermission } = await auth.api.hasPermission({
+      body: {
+        organizationId: classroomData.organizationId,
+        permissions: {
+          classroom: ["read"],
+        },
+      },
+      headers,
+    })
+    if (!hasPermission) {
+      return null
+    }
+
+    return classroomData
   },
 })

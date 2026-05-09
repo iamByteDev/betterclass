@@ -19,6 +19,10 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { AddClientsDialog } from "./add-clients-dialog"
+import { useQuery } from "convex/react"
+import { api } from "@/convex/_generated/api"
+import { redirect, useParams } from "next/navigation"
+import { Id } from "@/convex/_generated/dataModel"
 
 type StudentStatus = "online" | "offline" | "locked"
 
@@ -173,6 +177,19 @@ export function ClassroomLayout() {
   const [isSharing, setIsSharing] = useState(false)
   const [isAddClientsOpen, setIsAddClientsOpen] = useState(false)
 
+  const params = useParams<{ id: string }>()
+  const classroomData = useQuery(api.classrooms.getClassroomInfo, {
+    classroomId: params.id,
+  })
+  const isLoading = classroomData === undefined
+  if (isLoading) {
+    return <span className="font-lg font-bold">Loading...</span>
+  }
+  if (classroomData === null) {
+    return redirect("/app")
+  }
+
+  // reached here, classroomData is not nothing
   return (
     <div className="flex h-screen flex-col bg-background">
       {/* Top bar */}
@@ -191,7 +208,7 @@ export function ClassroomLayout() {
           </Link>
           <div className="hidden h-4 w-px bg-border sm:block" />
           <span className="hidden text-sm text-muted-foreground sm:block">
-            Period 3 — Computer Science
+            {classroomData.name}
           </span>
           <Badge
             variant="outline"
