@@ -3,7 +3,6 @@
 import { RedirectToSignIn } from "@/components/auth/redirect-to-signin"
 import { Authenticated, AuthLoading, Unauthenticated } from "convex/react"
 import { Loader2Icon } from "lucide-react"
-import { usePathname } from "next/navigation"
 
 export function EnsureSession({
   children,
@@ -12,18 +11,11 @@ export function EnsureSession({
   children: React.ReactNode
   redirectTo?: string
 }) {
-  const pathname = usePathname()
-
-  let customRedirectTo = redirectTo
-  if (!customRedirectTo && pathname === "/app/leaderboards") {
-    customRedirectTo = "/leaderboards"
-  }
-
   return (
     <>
       <Authenticated>{children}</Authenticated>
       <Unauthenticated>
-        <RedirectToSignIn redirectTo={customRedirectTo} />
+        <RedirectToSignIn redirectTo={redirectTo} />
       </Unauthenticated>
       <AuthLoading>
         <div className="flex min-h-screen items-center justify-center">
