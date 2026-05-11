@@ -1,11 +1,12 @@
 import { activeWindow } from "get-windows";
 
 let lastRecordedWindowTitle: string | undefined;
-
+let windowData: any
+let windowTitle: string | undefined
 async function getCurrentWindow() {
-  let windowData = await activeWindow();
-  let windowTitle = windowData?.title;
   if (windowTitle != lastRecordedWindowTitle) {
+    windowData = await activeWindow();
+    windowTitle = windowData?.title;
     lastRecordedWindowTitle = windowTitle;
     // TODO: Push to convex
   }
